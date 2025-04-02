@@ -1,0 +1,78 @@
+<h2 mat-dialog-title>
+  {{ data.isNew ? 'Ajouter un nouvel utilisateur' : (data.isEdit ? 'Modifier l\'utilisateur' : 'Profil utilisateur') }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="userForm">
+    <!-- Nom complet -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nom complet</mat-label>
+      <input matInput formControlName="fullName" [readonly]="!data.isEdit && !data.isNew">
+    </mat-form-field>
+
+    <!-- Email -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" [readonly]="!data.isEdit && !data.isNew">
+      <mat-error *ngIf="userForm.get('email')?.hasError('email')">
+        Veuillez entrer un email valide
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Téléphone -->
+    <mat-form-field appearance="outline" class="full-width" *ngIf="data.isEdit || data.isNew">
+      <mat-label>Téléphone</mat-label>
+      <input matInput formControlName="phone">
+    </mat-form-field>
+
+    <!-- Mot de passe (visible seulement en création) -->
+    <mat-form-field appearance="outline" class="full-width" *ngIf="data.isNew || data.isEdit">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="userForm.get('password')?.hasError('minlength')">
+        Le mot de passe doit contenir au moins 6 caractères
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Rôles -->
+    <mat-form-field appearance="outline" class="full-width" *ngIf="data.isEdit || data.isNew">
+      <mat-label>Rôles</mat-label>
+      <mat-select formControlName="roles" multiple>
+        <mat-option *ngFor="let role of rolesList" [value]="role">
+          {{ role.replace('ROLE_', '') }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Statut -->
+    <mat-slide-toggle formControlName="active" *ngIf="data.isEdit || data.isNew">
+      {{ userForm.get('active')?.value ? 'Actif' : 'Inactif' }}
+    </mat-slide-toggle>
+
+    <!-- Dates (en lecture seule) -->
+    <mat-form-field appearance="outline" class="full-width" *ngIf="!data.isNew">
+      <mat-label>Date de création</mat-label>
+      <input matInput [value]="userForm.get('createdAt')?.value | date: 'medium'" readonly>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width" *ngIf="!data.isNew">
+      <mat-label>Dernière mise à jour</mat-label>
+      <input matInput [value]="userForm.get('updatedAt')?.value | date: 'medium'" readonly>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="onSave()"
+    [disabled]="!userForm.valid"
+    *ngIf="data.isEdit || data.isNew">
+    {{ data.isNew ? 'Créer' : 'Enregistrer' }}
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,146 @@
+/* profile.component.scss */
+:host {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centre verticalement */
+  align-items: center; /* Centre horizontalement */
+  width: 100%;
+  padding: 2rem;
+  box-sizing: border-box;
+
+  mat-card {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transform: translateY(-5%); /* Ajustement fin du centrage vertical */
+
+    /* Animation subtile au chargement */
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+}
+
+/* Reste de votre CSS existant inchangé */
+mat-card-content {
+  padding: 1.5rem;
+  
+  .profile-field {
+    margin-bottom: 1.5rem;
+    
+    .field-label {
+      display: flex;
+      align-items: center;
+      color: #64748b;
+      font-size: 0.875rem;
+      margin-bottom: 0.25rem;
+      
+      mat-icon {
+        font-size: 18px;
+        margin-right: 0.5rem;
+      }
+    }
+    
+    .field-value {
+      font-size: 1rem;
+      color: #2c3e50;
+      padding: 0.75rem;
+      background: #f8fafc;
+      border-radius: 8px;
+      border-left: 3px solid #4361ee;
+    }
+  }
+  
+  .profile-image-container {
+    text-align: center;
+    margin-bottom: 2rem;
+    
+    img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #e2e8f0;
+    }
+  }
+}
+
+mat-card-actions {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #f1f1f1;
+  display: flex;
+  justify-content: flex-end;
+  
+  button {
+    margin-left: 1rem;
+    
+    mat-icon {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) translateY(-5%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateY(-5%);
+  }
+}
+
+/* Version responsive */
+@media (max-width: 600px) {
+  .profile-container {
+    padding: 1rem;
+    justify-content: flex-start; /* Sur mobile, on part du haut */
+    
+    mat-card {
+      transform: none; /* Retire l'ajustement vertical sur mobile */
+      animation: fadeIn 0.5s ease-out forwards;
+      
+      mat-card-content {
+        padding: 1rem;
+        
+        .profile-field {
+          margin-bottom: 1rem;
+        }
+      }
+    }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* Styles pour le mode édition (inchangés) */
+.profile-edit-field {
+  width: 100%;
+  margin-bottom: 1.5rem;
+
+  &.mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: white;
+  }
+}
+
+.edit-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.profile-field, .profile-edit-field {
+  transition: all 0.3s ease;
+}

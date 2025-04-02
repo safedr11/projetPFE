@@ -1,0 +1,62 @@
+.user-management-container {
+  padding: 16px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filters-container {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  align-items: center;
+
+  mat-form-field {
+    min-width: 200px;
+  }
+}
+
+.mat-elevation-z8 {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-mdc-chip {
+  margin: 2px !important;
+}
+
+/* Style pour les boutons d'action */
+.mat-mdc-icon-button {
+  margin: 0 4px;
+}
+
+/* Style pour le tableau responsive */
+@media (max-width: 768px) {
+  .filters-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+//* Dans votre fichier .scss */
+.role-chip.inactive {
+  background-color: #e8e8e8 !important;
+  color: #5a5a5a !important;
+  border-color: #c5c5c5 !important;
+  cursor: not-allowed;
+  opacity: 1 !important;
+}
+
+.role-chip.inactive .mdc-chip__checkmark {
+  display: none !important;
+}
+
+.role-chip.inactive.mat-mdc-chip:hover {
+  background-color: #e8e8e8 !important;
+}

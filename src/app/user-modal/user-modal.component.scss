@@ -1,0 +1,150 @@
+/* Styles généraux */
+.full-width {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+form{
+  margin-top: 2rem !important;
+}
+
+mat-dialog-content {
+  padding: 16px 24px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+mat-dialog-actions {
+  padding: 16px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  justify-content: flex-end;
+  
+  button {
+    margin-left: 8px;
+  }
+}
+
+/* Styles pour les champs de formulaire */
+mat-form-field {
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+  
+  .mat-form-field-outline {
+    background-color: #f5f5f5;
+    border-radius: 4px;
+  }
+  
+  &.mat-form-field-disabled {
+    .mat-form-field-outline {
+      background-color: #e0e0e0;
+    }
+  }
+}
+
+/* Styles spécifiques pour le champ Nom complet */
+mat-form-field {
+  &[formGroupName="fullName"],
+  & .mat-form-field-wrapper[formControlName="fullName"] {
+    margin-bottom: 1.5rem;
+    
+    /* Modifications pour éviter la troncature */
+    padding: 8px 0; /* Espace supplémentaire */
+    
+    .mat-form-field-label {
+      color: #3f51b5;
+      font-weight: bold;
+      font-size: 0.95em;
+    }
+    
+    .mat-input-element {
+      font-size: 1.1em;
+      font-weight: 500;
+      color: #212529;
+      padding: 12px 16px !important; /* Padding augmenté */
+      min-height: 48px; /* Hauteur minimale */
+      line-height: 1.4; /* Meilleur espacement vertical */
+      
+      &[readonly] {
+        background-color: #f8f9fa;
+        padding: 8px 12px;
+        border-radius: 4px;
+        border-left: 3px solid #3f51b5;
+      }
+    }
+    
+    .mat-form-field-outline {
+      background-color: #f8f9fa;
+      min-height: 52px; /* Hauteur minimale de l'encadré */
+      
+      .mat-form-field-outline-start,
+      .mat-form-field-outline-gap,
+      .mat-form-field-outline-end {
+        border-width: 1.2px; /* Légère réduction de l'épaisseur */
+        border-color: rgba(63, 81, 181, 0.2);
+      }
+    }
+    
+    &.mat-focused {
+      .mat-form-field-label {
+        color: #3f51b5;
+      }
+      .mat-form-field-outline {
+        .mat-form-field-outline-start,
+        .mat-form-field-outline-gap,
+        .mat-form-field-outline-end {
+          border-color: #3f51b5;
+        }
+      }
+    }
+  }
+}
+
+/* Styles pour les autres éléments */
+mat-slide-toggle {
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
+input[readonly] {
+  cursor: not-allowed;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.password-toggle {
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+  
+  &:hover {
+    opacity: 1;
+  }
+}
+
+/* Styles responsives */
+@media (max-width: 600px) {
+  mat-dialog-content {
+    padding: 12px;
+  }
+  
+  mat-dialog-actions {
+    padding: 12px;
+    flex-direction: column-reverse;
+    gap: 8px;
+    
+    button {
+      margin-left: 0;
+      width: 100%;
+    }
+  }
+}
+
+/* Animation pour les erreurs */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+.ng-invalid.ng-touched {
+  animation: shake 0.4s ease-in-out;
+}
