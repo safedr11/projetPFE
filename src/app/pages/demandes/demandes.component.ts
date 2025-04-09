@@ -121,6 +121,6 @@ export class DemandesComponent implements OnInit {
     }
   }
   viewDemande(id: string): void {
-    this.router.navigate(['/home/demandes', id]);
+    this.router.navigate(['/home/demandes/details', id]);
   }
 }

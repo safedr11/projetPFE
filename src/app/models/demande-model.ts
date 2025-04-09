@@ -11,6 +11,7 @@ export interface User {
     impactValue: number;
     probability: number;
     criticity?: number;
+    rssiComments: string;
   }
   
   export interface RiskAssessment {

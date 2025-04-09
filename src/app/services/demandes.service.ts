@@ -32,7 +32,7 @@ export class DemandesService {
     return this.http.post<DemandeModel>(`${this.apiUrl}/submit`, demande);
   }
   getDemandeById(id: string): Observable<DemandeModel> {
-    return this.http.get<DemandeModel>(`${this.apiUrl}/${id}`);
+    return this.http.get<DemandeModel>(`${this.apiUrl}/affich/${id}`);
   }
   
   

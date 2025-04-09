@@ -1,319 +1,33 @@
-// Variables
-$primary-color: #3f51b5;
-$accent-color: #ff4081;
-$warn-color: #f44336;
-$light-gray: #f5f5f5;
-$border-color: #e0e0e0;
-$shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-// Mixins
-@mixin card-style {
-  border-radius: 8px;
-  box-shadow: $shadow;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
-  }
-}
-
-@mixin form-field-style {
-  .mat-form-field-outline {
-    background-color: white;
-    border-radius: 4px;
-  }
-
-  .mat-form-field-wrapper {
-    padding-bottom: 0.5em;
-  }
-}
-
-// Global Styles
-.change-request-form {
-  padding: 1.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
-
-  // Section titles
-  mat-card-header {
-    margin-bottom: 1.5rem;
-    background-color: $light-gray;
-    border-radius: 8px 8px 0 0;
-    padding: 1rem 1.5rem;
-
-    mat-card-title {
-      font-size: 1.25rem;
-      font-weight: 500;
-      color: $primary-color;
-    }
-  }
-
-  mat-card {
-    @include card-style;
-    margin-bottom: 1.5rem;
-    overflow: hidden;
-
-    mat-card-content {
-      padding: 1.5rem;
-    }
-  }
-
-  // Form fields
-  mat-form-field {
-    @include form-field-style;
-    width: 100%;
-    margin-bottom: 0.5rem;
-  }
-
-  // Risk assessment cards
-  .risk-card {
-    @include card-style;
-    background-color: $light-gray;
-
-    h3 {
-      color: $primary-color;
-      border-bottom: 1px solid $border-color;
-      padding-bottom: 0.5rem;
-      margin-bottom: 1rem;
-    }
-  }
-
-  // Technical actions
-  .technical-actions {
-    .action-item {
-      @include card-style;
-      background-color: white;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      cursor: move;
-
-      .action-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid $border-color;
-
-        .action-title {
-          font-weight: 500;
-          color: $primary-color;
-        }
-      }
-    }
-  }
-
-  // Buttons
-  .add-action-button {
-    margin-top: 1rem;
-    display: flex;
-    align-items: center;
-
-    mat-icon {
-      margin-right: 0.5rem;
-    }
-  }
-
-  .submit-button {
-    display: block;
-    margin-left: auto;
-    padding: 0.5rem 2rem;
-    background-color: #4caf50; /* Couleur principale (vert) */
-    color: white; /* Couleur du texte */
-    font-size: 16px; /* Taille du texte */
-    font-weight: bold; /* Texte en gras */
-    padding: 12px 24px; /* Espacement interne */
-    border: none; /* Supprime les bordures */
-    border-radius: 8px; /* Coins arrondis */
-    cursor: pointer; /* Curseur en mode clic */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Ombre pour un effet 3D */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Animation pour le survol */
-  }
-
-  .submit-button:disabled {
-    background-color: #b0bec5 !important; /* Couleur grisée pour le bouton désactivé */
-    cursor: not-allowed !important; /* Curseur interdit */
-    box-shadow: none  !important; /* Supprime l'ombre */
-  }
-
-  .submit-button:hover:not(:disabled) {
-    background-color: #43a047  !important; /* Couleur légèrement plus foncée au survol */
-    transform: translateY(-2px) !important; /* Légère élévation au survol */
-  }
-
-  .submit-button:active:not(:disabled) {
-    background-color: #388e3c !important; /* Couleur encore plus foncée au clic */
-    transform: translateY(0) !important; /* Réinitialise l'élévation */
-  }
-
-  // Drag and drop styling
-  .cdk-drag-placeholder {
-    opacity: 0.5;
-    background: #ccc;
-    border: 2px dashed #666;
-  }
-
-  .cdk-drag-animating {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
-
-  // Responsive adjustments
-  @media (max-width: 768px) {
-    padding: 1rem;
-
-    mat-card-content {
-      padding: 1rem !important;
-    }
-
-    .grid {
-      gap: 1rem;
-    }
-  }
-
-  // Validation styles
-  .mat-error {
-    font-size: 0.75rem;
-    margin-top: 0.25rem;
-  }
-
-  // Required field indicator
-  .required-field::after {
-    content: " *";
-    color: $warn-color;
-  }
-}
-
-/* Conteneur principal */
-.form-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Titre principal */
-.form-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  text-align: center;
-  color: #333;
-}
-
-/* Sections */
-.form-section {
-  margin-bottom: 20px;
-}
-
-.form-section-bordered {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px;
-  background-color: #fff;
-}
-
-/* Titres des sections */
-.section-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 15px;
-  color: #555;
-}
-
-/* Grille */
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
+/* demande-form.component.scss */
 .form-group {
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 1rem;
+  width: 100%;
 }
 
-.form-group.full-width {
-  grid-column: span 2;
-}
-
-/* Champs de formulaire */
-label {
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 5px;
-  color: #444;
-}
-
-.form-input,
-.form-select,
-.form-textarea {
-  padding: 10px;
-  border: 1px solid #ccc;
+.technical-action {
+  border: 1px solid #eee;
+  padding: 1rem;
+  margin-bottom: 1rem;
   border-radius: 4px;
-  font-size: 14px;
-  color: #333;
 }
 
-.form-input:focus,
-.form-select:focus,
-.form-textarea:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
-}
-
-/* Messages d'erreur */
-.form-error {
-  font-size: 12px;
-  color: #e3342f;
-  margin-top: 5px;
-}
-
-/* Bouton de soumission */
-.form-actions {
+.action-header {
   display: flex;
-  justify-content: flex-end; /* Aligne le bouton à droite */
-  margin-top: 20px; /* Ajoute un espace au-dessus */
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-.form-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.add-action {
+  margin: 1rem 0;
 }
 
-.form-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.stepper-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
 }
 
-.form-button:hover:not(:disabled) {
-  background-color: #0056b3;
+mat-form-field {
+  width: 100%;
 }
-
-/* Conteneur pour chaque type de risque */
-.risk-container {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 20px;
-  background-color: #f9f9f9;
-}
-
-/* Sous-titre pour chaque risque */
-.form-subtitle {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: #555;
-}
-
-

@@ -27,7 +27,7 @@ export const routes: Routes = [
           { path: '', component: DemandesComponent }, // /home/demandes
           { path: 'nouvelle', component: DemandeFormComponent }, // /home/demandes/nouvelle
           { path: ':id/modifier', component: DemandeFormComponent },
-          { path: ':details', component: ConsultationDemandeComponent }
+          { path: 'details/:id', component: ConsultationDemandeComponent }
         ]
       }
     ]
