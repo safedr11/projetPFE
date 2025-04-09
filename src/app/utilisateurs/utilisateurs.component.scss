@@ -9,6 +9,30 @@
   margin-bottom: 20px;
 }
 
+
+/* Ajout d'une ombre pour les cartes */
+mat-card {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre douce */
+  border-radius: 8px; /* Coins arrondis */
+  transition: box-shadow 0.3s ease; /* Animation pour un effet fluide */
+}
+
+mat-card:hover {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Ombre plus prononcée au survol */
+}
+
+/* Ajout d'une ombre pour le tableau */
+.mat-elevation-z8 {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre douce */
+  border-radius: 8px; /* Coins arrondis */
+  overflow: hidden; /* Empêche le débordement */
+  transition: box-shadow 0.3s ease; /* Animation pour un effet fluide */
+}
+
+.mat-elevation-z8:hover {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Ombre plus prononcée au survol */
+}
+
 .filters-container {
   display: flex;
   gap: 16px;
