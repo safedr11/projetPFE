@@ -9,20 +9,32 @@ import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
 import { CatalogueComponent } from './pages/catalogue/catalogue.component';
 import { DemandesComponent } from './pages/demandes/demandes.component';
 import { ProfileComponent } from './profile/profile.component';
-
+import { DemandeFormComponent } from './pages/demandes/demande-form/demande-form.component';
+import { ConsultationDemandeComponent } from './pages/demandes/consultation-demande/consultation-demande.component';
 export const routes: Routes = [
-    { path: 'login', component: LoginComponent },
-    {path:'profile', component:ProfileComponent},
-    
-    { path: 'home', component: HomeComponent , canActivate: [authGuard] , children: [
+  { path: 'login', component: LoginComponent },
+  { path: 'profile', component: ProfileComponent },
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [authGuard],
+    children: [
       { path: 'utilisateurs', component: UtilisateursComponent },
-      {path: 'catalogue', component: CatalogueComponent},
-      {path: 'demandes', component: DemandesComponent}
-    ],},
-
-    {path: 'forgot-password', component: ForgotPasswordComponent},
-    {path: 'reset-password', component: ResetPasswordComponent},
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+      { path: 'catalogue', component: CatalogueComponent },
+      {
+        path: 'demandes',
+        children: [
+          { path: '', component: DemandesComponent }, // /home/demandes
+          { path: 'nouvelle', component: DemandeFormComponent }, // /home/demandes/nouvelle
+          { path: ':id/modifier', component: DemandeFormComponent },
+          { path: ':details', component: ConsultationDemandeComponent }
+        ]
+      }
+    ]
+  },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' }
+];
   
 
-];

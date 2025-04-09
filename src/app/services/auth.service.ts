@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -100,4 +101,43 @@ export class AuthService {
       { headers: { 'Content-Type': 'application/json' } }
     );
   }
+
+  isAdmin(): boolean {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) return false;
+
+        const decodedToken = this.decodeToken(token);
+        if (!decodedToken) return false;
+
+        // Vérification multi-format des rôles
+        const roles = [
+            decodedToken.role,
+            decodedToken.roles,
+            ...(decodedToken.authorities || []),
+            ...(decodedToken.scope?.split(' ') || [])
+        ].filter(r => !!r); // Filtre les valeurs null/undefined
+
+        return roles.some(role => 
+            typeof role === 'string' && 
+            role.toUpperCase().includes('ADMIN')
+        );
+    } catch (error) {
+        console.error("Erreur lors de la vérification du rôle admin:", error);
+        return false;
+    }
+
+    
+
+}
+
+  
+
+  
+  
+  
+  
+  
+  
+  
 }

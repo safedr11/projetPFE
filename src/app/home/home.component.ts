@@ -55,8 +55,9 @@ export class HomeComponent {
       icon: 'description', // Icône pour les demandes
       label: 'Demandes',
       route: 'demandes',
-      roles: ['REQUESTER']
+      roles: ['REQUESTER','ADMIN']
     },
+    
   
     
   ];

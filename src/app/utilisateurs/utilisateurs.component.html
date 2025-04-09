@@ -1,13 +1,14 @@
 <div class="user-management-container">
-  <div class="header-container">
-    <h2>Gestion des Utilisateurs</h2>
-    <button mat-raised-button color="primary" (click)="addUser()">
-      <mat-icon>person_add</mat-icon>
-      Ajouter un utilisateur
-    </button>
-  </div>
-
-  <!-- Filtres -->
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <div class="header-container">
+        <h2>Gestion des Utilisateurs</h2>
+        <button mat-raised-button color="primary" (click)="addUser()">
+          <mat-icon>person_add</mat-icon>
+          Ajouter un utilisateur
+        </button>
+      </div>
+        <!-- Filtres -->
   <div class="filters-container">
     <mat-form-field appearance="outline">
       <mat-label>Filtrer par rôle</mat-label>
@@ -33,6 +34,8 @@
       Réinitialiser
     </button>
   </div>
+    </mat-card-content>
+  </mat-card>
 
   <!-- Tableau Material -->
   <div class="mat-elevation-z8">

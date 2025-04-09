@@ -22,6 +22,7 @@
 </mat-toolbar>
 <mat-sidenav-container>
   <mat-sidenav #sidenav opened mode="side" [style.width.px]="200">
+    <img src="assets/wevioo_logo.png" alt="Wevioo Logo" class="login-logo">
     <mat-nav-list>  
        @for(item of filteredMenuItems; track $index){
       <a mat-list-item [routerLink]="item.route">
@@ -35,7 +36,7 @@
   <mat-sidenav-content>
     <router-outlet/>
   </mat-sidenav-content>
-
+ 
 </mat-sidenav-container>
 
 

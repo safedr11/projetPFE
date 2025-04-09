@@ -1,0 +1,368 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+  <!-- Titre principal -->
+  <h1 class="form-title">Formulaire de Demande de Changement</h1>
+
+  <!-- Section Informations de base -->
+  <div class="form-section form-section-bordered">
+    <h2 class="section-title">Informations de base</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="demandeur">Demandeur *</label>
+        <input id="demandeur" type="text" formControlName="demandeur" class="form-input" required>
+        <div *ngIf="form.get('demandeur')?.invalid && form.get('demandeur')?.touched" class="form-error">
+          Ce champ est requis
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="client">Client *</label>
+        <input id="client" type="text" formControlName="client" class="form-input" required>
+        <div *ngIf="form.get('client')?.invalid && form.get('client')?.touched" class="form-error">
+          Ce champ est requis
+        </div>
+      </div>
+      <div class="form-group full-width">
+        <label for="sourceDeChangement">Source du changement *</label>
+        <select id="sourceDeChangement" formControlName="sourceDeChangement" class="form-select">
+          <option *ngFor="let source of enums.sources" [value]="source">{{source}}</option>
+        </select>
+      </div>
+      <div class="form-group full-width">
+        <label for="description">Description détaillée *</label>
+        <textarea id="description" formControlName="description" rows="3" class="form-textarea" required></textarea>
+        <div *ngIf="form.get('description')?.invalid && form.get('description')?.touched" class="form-error">
+          Ce champ est requis
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section Étude de la demande -->
+  <div class="form-section form-section-bordered">
+    <h2 class="section-title">Étude de la demande</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="impactedInfrastructure">Service(s) impacté(s) *</label>
+        <input id="impactedInfrastructure" type="text" formControlName="impactedInfrastructure" class="form-input" required>
+        <div *ngIf="form.get('impactedInfrastructure')?.invalid && form.get('impactedInfrastructure')?.touched" class="form-error">
+          Ce champ est requis
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="niveauImpact">Niveau d'impact *</label>
+        <select id="niveauImpact" formControlName="niveauImpact" class="form-select">
+          <option *ngFor="let impact of enums.impacts" [value]="impact">{{impact}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="priorite">Priorité *</label>
+        <select id="priorite" formControlName="priorite" class="form-select">
+          <option *ngFor="let priority of enums.priorities" [value]="priority">{{priority}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="categorie">Catégorie *</label>
+        <select id="categorie" formControlName="categorie" class="form-select">
+          <option *ngFor="let category of enums.categories" [value]="category">{{category}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+ <!-- Section Ressources nécessaires -->
+<div class="form-section form-section-bordered">
+  <h2 class="section-title">Ressources nécessaires</h2>
+  <div class="form-grid" formGroupName="ressources"> <!-- Ajout de formGroupName -->
+    <div class="form-group">
+      <label for="humanResources">Ressources humaines</label>
+      <input id="humanResources" type="text" formControlName="humanResources" class="form-input">
+    </div>
+    <div class="form-group">
+      <label for="materialResources">Ressources matérielles</label>
+      <input id="materialResources" type="text" formControlName="materialResources" class="form-input">
+    </div>
+  </div>
+</div>
+
+
+<div formGroupName="riskAssessment" class="form-section form-section-bordered">
+  <h2 class="section-title">Évaluation des Risques</h2>
+
+  <!-- Disponibilité -->
+  <div class="risk-container">
+    <h3 class="form-subtitle">Disponibilité</h3>
+    <div formGroupName="disponibilite" class="form-grid">
+      <div class="form-group">
+        <label for="disponibiliteDescription">Description</label>
+        <textarea id="disponibiliteDescription" formControlName="description" rows="2" class="form-textarea"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="disponibiliteImpact">Impact (1-5)</label>
+        <input id="disponibiliteImpact" type="number" formControlName="impactValue" class="form-input" min="1" max="5">
+      </div>
+      <div class="form-group">
+        <label for="disponibiliteProbability">Probabilité (1-5)</label>
+        <input id="disponibiliteProbability" type="number" formControlName="probability" class="form-input" min="1" max="5">
+      </div>
+      <div class="form-group">
+        <label for="disponibiliteCriticite">Criticité</label>
+        <input id="disponibiliteCriticite" type="text" [value]="calculateCriticity('disponibilite')" class="form-input" readonly>
+      </div>
+      <div class="form-group full-width">
+        <label for="disponibiliteRssiComment">Commentaire du RSSI</label>
+        <textarea id="disponibiliteRssiComment" formControlName="rssiComments" rows="2" class="form-textarea"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Intégrité -->
+  <div class="risk-container">
+    <h3 class="form-subtitle">Intégrité</h3>
+    <div formGroupName="integrite" class="form-grid">
+      <div class="form-group">
+        <label for="integriteDescription">Description</label>
+        <textarea id="integriteDescription" formControlName="description" rows="2" class="form-textarea"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="integriteImpact">Impact (1-5)</label>
+        <input id="integriteImpact" type="number" formControlName="impactValue" class="form-input" min="1" max="5">
+      </div>
+      <div class="form-group">
+        <label for="integriteProbability">Probabilité (1-5)</label>
+        <input id="integriteProbability" type="number" formControlName="probability" class="form-input" min="1" max="5">
+      </div>
+      <div class="form-group">
+        <label for="integriteCriticite">Criticité</label>
+        <input id="integriteCriticite" type="text" [value]="calculateCriticity('integrite')" class="form-input" readonly>
+      </div>
+      <div class="form-group full-width">
+        <label for="integriteRssiComment">Commentaire du RSSI</label>
+        <textarea id="integriteRssiComment" formControlName="rssiComments" rows="2" class="form-textarea"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confidentialité -->
+  <div class="risk-container">
+    <h3 class="form-subtitle">Confidentialité</h3>
+    <div formGroupName="confidentialite" class="form-grid">
+      <div class="form-group">
+        <label for="confidentialiteDescription">Description</label>
+        <textarea id="confidentialiteDescription" formControlName="description" rows="2" class="form-textarea"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="confidentialiteImpact">Impact (1-5)</label>
+        <input id="confidentialiteImpact" type="number" formControlName="impactValue" class="form-input" min="1" max="5">
+      </div>
+      <div class="form-group">
+        <label for="confidentialiteProbability">Probabilité (1-5)</label>
+        <input id="confidentialiteProbability" type="number" formControlName="probability" class="form-input" min="1" max="5">
+      </div>
+      <div class="form-group">
+        <label for="confidentialiteCriticite">Criticité</label>
+        <input id="confidentialiteCriticite" type="text" [value]="calculateCriticity('confidentialite')" class="form-input" readonly>
+      </div>
+      <div class="form-group full-width">
+        <label for="confidentialiteRssiComment">Commentaire du RSSI</label>
+        <textarea id="confidentialiteRssiComment" formControlName="rssiComments" rows="2" class="form-textarea"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Section Actions Techniques -->
+  <div class="form-section form-section-bordered">
+    <h2 class="section-title">Actions Techniques</h2>
+
+    <!-- Liste des actions techniques -->
+    <div 
+      formArrayName="technicalActions" 
+      cdkDropList 
+      (cdkDropListDropped)="drop($event)" 
+      *ngIf="technicalActions.controls.length > 0" 
+      class="action-list"
+    >
+      <div 
+        *ngFor="let action of technicalActions.controls; let i = index" 
+        [formGroupName]="i" 
+        class="action-item" 
+        cdkDrag
+      >
+        <div class="form-grid">
+          <div class="form-group">
+            <label [for]="'description-' + i">Description *</label>
+            <input 
+              [id]="'description-' + i"
+              type="text" 
+              formControlName="description" 
+              class="form-input"
+            >
+            <div 
+              *ngIf="action.get('description')?.invalid && (action.get('description')?.dirty || action.get('description')?.touched)" 
+              class="form-error"
+            >
+              Ce champ est requis
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label [for]="'responsable-' + i">Responsable *</label>
+            <input 
+              [id]="'responsable-' + i"
+              type="text" 
+              formControlName="responsable" 
+              class="form-input"
+            >
+            <div 
+              *ngIf="action.get('responsable')?.invalid && (action.get('responsable')?.dirty || action.get('responsable')?.touched)" 
+              class="form-error"
+            >
+              Ce champ est requis
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label [for]="'plannedDate-' + i">Date Planifiée *</label>
+            <input 
+              [id]="'plannedDate-' + i"
+              type="datetime-local" 
+              formControlName="plannedDate" 
+              class="form-input"
+            >
+            <div 
+              *ngIf="action.get('plannedDate')?.invalid && (action.get('plannedDate')?.dirty || action.get('plannedDate')?.touched)" 
+              class="form-error"
+            >
+              Ce champ est requis
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label [for]="'actionType-' + i">Type</label>
+            <select 
+              [id]="'actionType-' + i"
+              formControlName="actionType" 
+              class="form-select"
+            >
+              <option *ngFor="let type of enums.actionTypes" [value]="type">{{type}}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label [for]="'status-' + i">Statut</label>
+            <select 
+              [id]="'status-' + i"
+              formControlName="status" 
+              class="form-select"
+            >
+              <option *ngFor="let status of enums.actionStatuses" [value]="status">{{status}}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <button 
+              type="button" 
+              (click)="removeTechnicalAction(i)" 
+              class="form-button form-button-danger" 
+              mat-icon-button
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulaire pour ajouter une nouvelle action technique -->
+    <div class="form-grid" [formGroup]="newActionForm">
+      <!-- Champ Description -->
+      <div class="form-group">
+        <label for="newActionDescription">Description *</label>
+        <input 
+          id="newActionDescription" 
+          type="text" 
+          formControlName="description" 
+          class="form-input"
+        >
+        <div 
+          *ngIf="newActionForm.get('description')?.invalid && (newActionForm.get('description')?.dirty || newActionForm.get('description')?.touched)" 
+          class="form-error"
+        >
+          Ce champ est requis
+        </div>
+      </div>
+
+      <!-- Champ Responsable -->
+      <div class="form-group">
+        <label for="newActionResponsable">Responsable *</label>
+        <input 
+          id="newActionResponsable" 
+          type="text" 
+          formControlName="responsable" 
+          class="form-input"
+        >
+        <div 
+          *ngIf="newActionForm.get('responsable')?.invalid && (newActionForm.get('responsable')?.dirty || newActionForm.get('responsable')?.touched)" 
+          class="form-error"
+        >
+          Ce champ est requis
+        </div>
+      </div>
+
+      <!-- Champ Date Planifiée -->
+      <div class="form-group">
+        <label for="newActionPlannedDate">Date Planifiée *</label>
+        <input 
+          id="newActionPlannedDate" 
+          type="datetime-local" 
+          formControlName="plannedDate" 
+          class="form-input"
+        >
+        <div 
+          *ngIf="newActionForm.get('plannedDate')?.invalid && (newActionForm.get('plannedDate')?.dirty || newActionForm.get('plannedDate')?.touched)" 
+          class="form-error"
+        >
+          Ce champ est requis
+        </div>
+      </div>
+
+      <!-- Champ Type -->
+      <div class="form-group">
+        <label for="newActionType">Type</label>
+        <select 
+          id="newActionType" 
+          formControlName="actionType" 
+          class="form-select"
+        >
+          <option *ngFor="let type of enums.actionTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+
+      <!-- Bouton Ajouter une Action -->
+      <div class="form-group full-width">
+        <button 
+          type="button" 
+          (click)="addNewAction()" 
+          class="form-button" 
+          [disabled]="newActionForm.invalid"
+        >
+          Ajouter une Action
+        </button>
+      </div>
+    </div>
+  </div>
+
+   <!-- Bouton Ajouter une Action -->
+   <div class="form-group full-width">
+    <button 
+      type="button" 
+      (click)="onSubmit()" 
+      class="form-button" 
+      [disabled]="newActionForm.invalid"
+    >
+     Enregistrer la Demande
+    </button>
+  </div>
+
+
+
+</form>
