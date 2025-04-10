@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DemandesService } from '../../../services/demandes.service';
 import { DemandeModel } from '../../../models/demande-model';
-
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
@@ -19,6 +19,8 @@ import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { FrenchDatePipe } from '../french-date.pipe';
+import { MatSelectModule } from '@angular/material/select'; 
+
 @Component({
   selector: 'app-consultation-demande',
   standalone: true,
@@ -31,45 +33,58 @@ import { FrenchDatePipe } from '../french-date.pipe';
     MatSortModule,
     MatMenuModule,
     MatTooltipModule,
-    MatProgressSpinnerModule, // Correction de "MatProgressSpinne"
+    MatProgressSpinnerModule,
     MatSnackBarModule,
     MatInputModule,
     MatFormFieldModule,
-    MatExpansionModule, // Si utilisé pour les panneaux d'expansion
-   CommonModule,
-    FrenchDatePipe // Si utilisé pour formater les dates
-  ],// Ajoutez les autres modules Angular Material que vous utilisez
+    MatExpansionModule,
+    CommonModule,
+    FormsModule,
+    MatSelectModule,
+    FrenchDatePipe
+  ],
   templateUrl: './consultation-demande.component.html',
   styleUrl: './consultation-demande.component.scss'
 })
 export class ConsultationDemandeComponent {
   demande: DemandeModel | null = null;
   loading = true;
-  userRole: string | null = null; // Rôle de l'utilisateur
-  isEditable: boolean = false; // Indique si la demande est éditable
+  isEditable = false; // Par défaut, le formulaire est en mode lecture
 
   constructor(
     private route: ActivatedRoute,
-    private demandeService: DemandesService,
+    private demandesService: DemandesService,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+    const isDecisionRoute = this.route.snapshot.url.some(segment => segment.path === 'decision');
+    this.isEditable = isDecisionRoute; // Active le mode édition si la route contient "decision"
+
     if (id) {
-      this.demandeService.getDemandeById(id).subscribe({
+      this.demandesService.getDemandeById(id).subscribe({
         next: (demande) => {
           this.demande = demande;
           this.loading = false;
         },
         error: () => {
           this.loading = false;
-          // Gérer l'erreur
+          this.snackBar.open('Erreur lors du chargement de la demande.', 'Fermer', { duration: 3000 });
         }
       });
     }
   }
+
   goBack(): void {
     window.history.back();
+  }
+
+  approveDemande(): void {
+    console.log('Demande approuvée:', this.demande);
+  }
+
+  rejectDemande(): void {
+    console.log('Demande rejetée:', this.demande);
   }
 }

@@ -11,6 +11,7 @@ import { DemandesComponent } from './pages/demandes/demandes.component';
 import { ProfileComponent } from './profile/profile.component';
 import { DemandeFormComponent } from './pages/demandes/demande-form/demande-form.component';
 import { ConsultationDemandeComponent } from './pages/demandes/consultation-demande/consultation-demande.component';
+import { DemandeDecisionComponent } from './pages/demandes/demande-decision/demande-decision.component';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent },
@@ -27,7 +28,8 @@ export const routes: Routes = [
           { path: '', component: DemandesComponent }, // /home/demandes
           { path: 'nouvelle', component: DemandeFormComponent }, // /home/demandes/nouvelle
           { path: ':id/modifier', component: DemandeFormComponent },
-          { path: 'details/:id', component: ConsultationDemandeComponent }
+          { path: 'details/:id', component: ConsultationDemandeComponent },
+          { path: 'decision/:id', component:DemandeDecisionComponent }
         ]
       }
     ]

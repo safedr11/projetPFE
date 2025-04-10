@@ -1,0 +1,122 @@
+/* Conteneur principal */
+.demande-details-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style global pour les cartes */
+.section-card {
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.section-card mat-card-header {
+  background-color: #3f51b5;
+  color: white;
+  padding: 10px 16px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.section-card mat-card-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.section-card mat-card-content {
+  padding: 16px;
+}
+
+/* Style pour les lignes de détail */
+.detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  .detail-label {
+    font-weight: bold;
+    color: #424242;
+    flex: 1;
+    text-align: left;
+    margin-right: 16px;
+  }
+
+  mat-form-field {
+    flex: 2;
+    margin-left: 16px;
+    width: 100%;
+  }
+}
+
+/* Supprime les marges ou arrière-plans indésirables */
+mat-form-field {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+/* Ajuste les champs en mode édition */
+mat-form-field[appearance="outline"] {
+  background-color: #ffffff; /* Arrière-plan blanc pour les champs éditables */
+  border-radius: 4px;
+}
+
+mat-form-field.mat-focused {
+  background-color: #ffffff;
+  border: 1px solid #3f51b5;
+}
+
+/* Style pour les sections de risque */
+.risk-section {
+  margin-bottom: 16px;
+
+  h3 {
+    font-size: 1.2rem;
+    color: #3f51b5;
+    margin-bottom: 8px;
+  }
+
+  .detail-row {
+    margin-bottom: 12px;
+  }
+}
+
+/* Style pour les boutons */
+.actions-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+
+  button {
+    min-width: 120px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+  }
+
+  button[color="primary"] {
+    background-color: #3f51b5;
+    color: white;
+  }
+
+  button[color="warn"] {
+    background-color: #f44336;
+    color: white;
+  }
+}
+
+button[color="primary"]:hover {
+  background-color: #303f9f;
+}
+
+button[color="warn"]:hover {
+  background-color: #d32f2f;
+}

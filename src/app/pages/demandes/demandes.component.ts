@@ -136,11 +136,11 @@ export class DemandesComponent implements OnInit {
   }
 
   viewDemande(id: string): void {
-    this.router.navigate(['/home/demandes/details', id], { queryParams: { mode: 'read' } });
+    this.router.navigate(['/home/demandes/details', id]);
   }
 
   navigateToDecision(id: string): void {
-    this.router.navigate(['/home/demandes/details', id, 'decision']);
+    this.router.navigate(['/home/demandes/decision', id]);
   }
 
   getStatusClass(status: Statuts): string {
