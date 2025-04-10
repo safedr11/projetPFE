@@ -43,7 +43,7 @@ import {
     MatFormFieldModule,
     MatDatepickerModule,
     CommonModule,
-    FrenchDatePipe
+   /* FrenchDatePipe*/
   ]
 })
 export class DemandeFormComponent implements OnInit {

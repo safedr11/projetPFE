@@ -42,30 +42,30 @@
       </div>
       <div class="detail-row">
         <span class="detail-label">Niveau d'impact:</span>
-        <select [(ngModel)]="demande.niveauImpact" class="custom-select">
-          <option *ngFor="let impact of ['Majeur', 'Mineur', 'Modéré']" [value]="impact">
+        <mat-select [(ngModel)]="demande.niveauImpact" placeholder="Sélectionnez un niveau d'impact" class="custom-select">
+          <mat-option *ngFor="let impact of impactLevels" [value]="impact">
             {{ impact }}
-          </option>
-        </select>
+          </mat-option>
+        </mat-select>
       </div>
+      
       <div class="detail-row">
         <span class="detail-label">Priorité:</span>
-        <select [(ngModel)]="demande.priorite" class="custom-select">
-          <option *ngFor="let priority of ['Haute', 'Moyenne', 'Basse']" [value]="priority">
+        <mat-select [(ngModel)]="demande.priorite" placeholder="Sélectionnez une priorité" class="custom-select">
+          <mat-option *ngFor="let priority of priorities" [value]="priority">
             {{ priority }}
-          </option>
-        </select>
+          </mat-option>
+        </mat-select>
       </div>
+      
       <div class="detail-row">
         <span class="detail-label">Catégorie:</span>
-        <select [(ngModel)]="demande.categorie" class="custom-select">
-          <option *ngFor="let categorie of ['Mineur', 'Significatif', 'Majeur']" [value]="categorie">
+        <mat-select [(ngModel)]="demande.categorie" placeholder="Sélectionnez une catégorie" class="custom-select">
+          <mat-option *ngFor="let categorie of categories" [value]="categorie">
             {{ categorie }}
-          </option>
-        </select>
+          </mat-option>
+        </mat-select>
       </div>
-    </mat-card-content>
-  </mat-card>
 
   <!-- Section Ressources -->
   <mat-card class="section-card" *ngIf="demande.ressources">
@@ -123,13 +123,16 @@
     </mat-card-header>
     <mat-card-content>
       <mat-accordion>
-        <mat-expansion-panel *ngFor="let action of demande.technicalActions">
+        <mat-expansion-panel style="margin-bottom: 
+        15px;" *ngFor="let action of demande.technicalActions">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              Action #{{ action.actionNumber }} - {{ action.description }}
+              <span class="detail-label">Description:</span>
+              <input [(ngModel)]="action.description" class="custom-input" placeholder="Description de l'action" />
             </mat-panel-title>
             <mat-panel-description>
-              Statut: {{ action.status }}
+              <span class="detail-label">Statut:</span>
+              <input [(ngModel)]="action.status" class="custom-input" placeholder="Statut de l'action" />
             </mat-panel-description>
           </mat-expansion-panel-header>
           <div class="detail-row">
@@ -142,8 +145,13 @@
           </div>
           <div class="detail-row">
             <span class="detail-label">Type d'action:</span>
-            <input [(ngModel)]="action.actionType" class="custom-input" />
+            <mat-select [(ngModel)]="action.actionType" placeholder="Sélectionnez un type" class="custom-select">
+              <mat-option *ngFor="let type of technicalActionTypes" [value]="type">
+                {{ type }}
+              </mat-option>
+            </mat-select>
           </div>
+         
           <div class="detail-row">
             <span class="detail-label">Commentaires:</span>
             <textarea [(ngModel)]="action.comments" class="custom-textarea"></textarea>
@@ -163,4 +171,3 @@
   <div class="actions-container">
     <button mat-raised-button color="primary" (click)="goBack()">Retour</button>
   </div>
-</div>

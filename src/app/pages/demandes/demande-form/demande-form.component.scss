@@ -34,3 +34,30 @@ mat-form-field {
 .form-group{
   width:750px
 }
+.detail-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+
+  .detail-label {
+    font-weight: bold;
+    color: #424242;
+    flex: 1;
+    text-align: left;
+    margin-right: 16px;
+  }
+
+  .custom-select {
+    flex: 2;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 14px;
+    background-color: white;
+  }
+
+  mat-select {
+    width: 100%;
+  }
+}

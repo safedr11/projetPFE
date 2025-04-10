@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DemandesService } from '../../../services/demandes.service';
-import { DemandeModel } from '../../../models/demande-model';
+import { DemandeModel, TechnicalActionType, TechnicalStatus,Impact, Priorite, Categorie  } from '../../../models/demande-model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,6 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 @Component({
   selector: 'app-demande-decision',
   standalone: true,
@@ -33,6 +34,14 @@ export class DemandeDecisionComponent implements OnInit {
   demande: DemandeModel | null = null; // Contient les données de la demande
   loading = true; // Indique si les données sont en cours de chargement
   isEditable = false; // Active le mode édition si nécessaire
+
+  // Liste des types d'action et des statuts
+  technicalActionTypes = Object.values(TechnicalActionType);
+  technicalStatuses = Object.values(TechnicalStatus);
+  // Listes pour les énumérations
+  impactLevels = Object.values(Impact);
+  priorities = Object.values(Priorite);
+  categories = Object.values(Categorie);
 
   constructor(
     private route: ActivatedRoute,
@@ -58,6 +67,8 @@ export class DemandeDecisionComponent implements OnInit {
           this.snackBar.open('Erreur lors du chargement de la demande.', 'Fermer', { duration: 3000 });
         }
       });
+    } else {
+      this.loading = false;
     }
   }
 
