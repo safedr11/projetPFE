@@ -49,14 +49,15 @@ export class HomeComponent {
       icon: 'inventory', // Icône pour le catalogue
       label: 'Catalogue',
       route: 'catalogue',
-      roles: ['ADMIN']
+      roles: ['ADMIN','REQUESTER','CHANGE_MANAGER','RSSI','DBU','DSI','EXECUTER']
     },
     {
       icon: 'description', // Icône pour les demandes
       label: 'Demandes',
       route: 'demandes',
-      roles: ['REQUESTER','ADMIN']
+      roles: ['REQUESTER','ADMIN','CHANGE_MANAGER','RSSI','DBU','DSI','EXECUTER']
     },
+  
     
   
     

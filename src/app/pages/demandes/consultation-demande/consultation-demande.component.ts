@@ -45,10 +45,13 @@ import { FrenchDatePipe } from '../french-date.pipe';
 export class ConsultationDemandeComponent {
   demande: DemandeModel | null = null;
   loading = true;
+  userRole: string | null = null; // Rôle de l'utilisateur
+  isEditable: boolean = false; // Indique si la demande est éditable
 
   constructor(
     private route: ActivatedRoute,
-    private demandeService: DemandesService
+    private demandeService: DemandesService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {

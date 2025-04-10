@@ -22,7 +22,7 @@ export class DemandesService {
    * Récupère toutes les demandes de l'utilisateur connecté
    */
   getDemandes(): Observable<DemandeModel[]> {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdmin()|| this.authService.isChange_Manger()|| this.authService.isRSSI() || this.authService.isDBU() || this.authService.isDSI()) {
       return this.http.get<DemandeModel[]>(`${this.apiUrl}/All`);
     } else {
       return this.http.get<DemandeModel[]>(`${this.apiUrl}/mes-demandes`);

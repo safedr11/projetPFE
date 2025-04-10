@@ -70,6 +70,7 @@ export interface User {
     Brouillon = 'Brouillon',
     approuvée = 'approuvée',
     rejetée = 'rejetée',
+    en_cours_revision = 'en_cours_revision',
     en_cours_execution = 'en_cours_execution',
     en_cours_vérification = 'en_cours_vérification'
   }

@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
@@ -126,18 +127,110 @@ export class AuthService {
         console.error("Erreur lors de la vérification du rôle admin:", error);
         return false;
     }
-
+    
     
 
 }
 
-  
+isDSI(): boolean {
+  try {
+      const token = localStorage.getItem('token');
+      if (!token) return false;
 
+      const decodedToken = this.decodeToken(token);
+      if (!decodedToken) return false;
+
+      // Vérification multi-format des rôles
+      const roles = [
+          decodedToken.role,
+          decodedToken.roles,
+          ...(decodedToken.authorities || []),
+          ...(decodedToken.scope?.split(' ') || [])
+      ].filter(r => !!r); // Filtre les valeurs null/undefined
+
+      return roles.some(role => 
+          typeof role === 'string' && 
+          role.toUpperCase().includes('DSI')
+      );
+  } catch (error) {
+      console.error("Erreur lors de la vérification du rôle DSI:", error);
+      return false;
+  } 
   
-  
-  
-  
-  
-  
-  
+}
+isDBU(): boolean {
+  try {
+      const token = localStorage.getItem('token');
+      if (!token) return false;
+
+      const decodedToken = this.decodeToken(token);
+      if (!decodedToken) return false;
+
+      // Vérification multi-format des rôles
+      const roles = [
+          decodedToken.role,
+          decodedToken.roles,
+          ...(decodedToken.authorities || []),
+          ...(decodedToken.scope?.split(' ') || [])
+      ].filter(r => !!r); // Filtre les valeurs null/undefined
+
+      return roles.some(role => 
+          typeof role === 'string' && 
+          role.toUpperCase().includes('DBU')
+      );
+  } catch (error) {
+      console.error("Erreur lors de la vérification du rôle DBU:", error);
+      return false;
+  }
+}
+isRSSI(): boolean {
+  try {
+      const token = localStorage.getItem('token');
+      if (!token) return false;
+
+      const decodedToken = this.decodeToken(token);
+      if (!decodedToken) return false;
+
+      // Vérification multi-format des rôles
+      const roles = [
+          decodedToken.role,
+          decodedToken.roles,
+          ...(decodedToken.authorities || []),
+          ...(decodedToken.scope?.split(' ') || [])
+      ].filter(r => !!r); // Filtre les valeurs null/undefined
+
+      return roles.some(role => 
+          typeof role === 'string' && 
+          role.toUpperCase().includes('RSSI')
+      );
+  } catch (error) {
+      console.error("Erreur lors de la vérification du rôle RSSI:", error);
+      return false;
+  }
+}
+
+isChange_Manger(): boolean {
+  try {
+      const token = localStorage.getItem('token');
+      if (!token) return false;
+
+      const decodedToken = this.decodeToken(token);
+      if (!decodedToken) return false;
+
+      // Vérification multi-format des rôles
+      const roles = [
+          decodedToken.role,
+          decodedToken.roles,
+          ...(decodedToken.authorities || []),
+          ...(decodedToken.scope?.split(' ') || [])
+      ].filter(r => !!r); // Filtre les valeurs null/undefined
+
+      return roles.some(role => 
+          typeof role === 'string' && 
+          role.toUpperCase().includes('CHANGE_MANAGER')
+      );
+  } catch (error) {
+      console.error("Erreur lors de la vérification du rôle changemanger:", error);
+      return false;
+  }}
 }

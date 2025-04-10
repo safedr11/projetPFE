@@ -1,94 +1,150 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>
-      {{ isAdmin ? 'Toutes les demandes' : 'Mes demandes' }}
-    </mat-card-title>
-    <!-- Bouton pour créer une nouvelle demande -->
-    <button mat-raised-button color="primary" (click)="navigateToCreate()">
-      <mat-icon>add</mat-icon> Nouvelle Demande
-    </button>
-  </mat-card-header>
-
-  <mat-card-content>
-    <!-- Spinner de chargement -->
-    <div *ngIf="isLoading" class="loading-container">
-      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-    </div>
-
-    <!-- Table des demandes -->
-    <div *ngIf="!isLoading" class="table-container">
-      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-        <!-- Colonne ID -->
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-          <td mat-cell *matCellDef="let demande">{{ demande.id }}</td>
-        </ng-container>
-
-        <!-- Colonne Client -->
-        <ng-container matColumnDef="client">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Client</th>
-          <td mat-cell *matCellDef="let demande">{{ demande.client }}</td>
-        </ng-container>
-
-        <!-- Colonne Description -->
-        <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
-          <td mat-cell *matCellDef="let demande">{{ demande.description | slice:0:50 }}...</td>
-        </ng-container>
-
-        <!-- Colonne Statut -->
-        <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Statut</th>
-          <td mat-cell *matCellDef="let demande">
-            <span class="status-badge" [class]="getStatusClass(demande.status)">
-              {{ demande.status }}
-            </span>
-          </td>
-        </ng-container>
-
-        <!-- Colonne Priorité -->
-        <ng-container matColumnDef="priorite">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Priorité</th>
-          <td mat-cell *matCellDef="let demande">
-            <span class="priority-badge" [class]="getPriorityClass(demande.priorite)">
-              {{ demande.priorite }}
-            </span>
-          </td>
-        </ng-container>
-
-        <!-- Colonne Date de création -->
-        <ng-container matColumnDef="createdAt">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Créée le</th>
-          <td mat-cell *matCellDef="let demande">{{ demande.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
-        </ng-container>
-
-        <!-- Colonne Actions -->
-        <ng-container  matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>Actions</th>
-          <td mat-cell *matCellDef="let demande">
-            <button mat-icon-button color="accent" [matTooltip]="'Consulter la demande'" (click)="viewDemande(demande.id)">
-              <mat-icon>visibility</mat-icon>
-            </button>
-            <button *ngIf="isAdmin" mat-icon-button (click)="editDemande(demande.id)" matTooltip="Modifier">
-              <mat-icon>edit</mat-icon>
-            </button>
-            
-          </td>
-        </ng-container>
-
-        <!-- Header et lignes -->
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-
-      <!-- Message si aucune donnée -->
-      <div *ngIf="dataSource.data.length === 0" class="no-data-message">
-        <mat-icon>info</mat-icon>
-        <span>Aucune demande trouvée</span>
+<div class="demand-management-container">
+  <mat-card appearance="outlined" style="margin-bottom: 16px;">
+    <mat-card-content>
+      <div class="header-container">
+        <h2>{{ isAdmin || isRSSI || isChangeManager || isDSI || isDBU ? 'Gestion des Demandes' : 'Mes Demandes' }}</h2>
+        <button mat-raised-button color="primary" (click)="navigateToCreate()">
+          <mat-icon>add</mat-icon>
+          Nouvelle Demande
+        </button>
       </div>
+      
+      <!-- Filtres -->
+      <div class="filters-container">
+        <mat-form-field appearance="outline">
+          <mat-label>Filtrer par statut</mat-label>
+          <mat-select [(value)]="selectedStatus" (selectionChange)="applyFilters()">
+            <mat-option value="">Tous les statuts</mat-option>
+            <mat-option *ngFor="let status of statuses" [value]="status">
+              {{ status }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <!-- Paginator -->
-      <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+        <mat-form-field appearance="outline">
+          <mat-label>Filtrer par priorité</mat-label>
+          <mat-select [(value)]="selectedPriority" (selectionChange)="applyFilters()">
+            <mat-option value="">Toutes les priorités</mat-option>
+            <mat-option *ngFor="let priority of priorities" [value]="priority">
+              {{ priority }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- Filtrer par impact -->
+  <mat-form-field appearance="outline">
+    <mat-label>Filtrer par impact</mat-label>
+    <mat-select [(value)]="selectedImpact" (selectionChange)="applyFilters()">
+      <mat-option value="">Tous les impacts</mat-option>
+      <mat-option *ngFor="let impact of impacts" [value]="impact">
+        {{ impact }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Filtrer par catégorie -->
+  <mat-form-field appearance="outline">
+    <mat-label>Filtrer par catégorie</mat-label>
+    <mat-select [(value)]="selectedCategorie" (selectionChange)="applyFilters()">
+      <mat-option value="">Toutes les catégories</mat-option>
+      <mat-option *ngFor="let categorie of categories" [value]="categorie">
+        {{ categorie }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Recherche</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Filtrer...">
+        </mat-form-field>
+
+        <button mat-button (click)="resetFilters()">
+          <mat-icon>refresh</mat-icon>
+          Réinitialiser
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Tableau Material -->
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <!-- Colonne ID -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let demande">{{ demande.id }}</td>
+      </ng-container>
+
+      <!-- Colonne Client -->
+      <ng-container matColumnDef="client">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Client</th>
+        <td mat-cell *matCellDef="let demande">{{ demande.client }}</td>
+      </ng-container>
+
+      <!-- Colonne Description -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+        <td mat-cell *matCellDef="let demande">{{ demande.description | slice:0:50 }}...</td>
+      </ng-container>
+
+      <!-- Colonne Statut -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Statut</th>
+        <td mat-cell *matCellDef="let demande">
+          <span class="status-badge" [class]="getStatusClass(demande.status)">
+            {{ demande.status }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Colonne Priorité -->
+      <ng-container matColumnDef="priorite">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Priorité</th>
+        <td mat-cell *matCellDef="let demande">
+          <span class="priority-badge" [class]="getPriorityClass(demande.priorite)">
+            {{ demande.priorite }}
+          </span>
+        </td>
+      </ng-container>
+      <!-- Colonne Impact -->
+      <ng-container matColumnDef="niveauImpact">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Impact</th>
+        <td mat-cell *matCellDef="let demande">{{ demande.niveauImpact }}</td>
+      </ng-container>
+       <!-- Colonne Categorie -->
+       <ng-container matColumnDef="categorie">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Catégorie</th>
+        <td mat-cell *matCellDef="let demande">{{ demande.categorie }}</td>
+      </ng-container>
+      <!-- Colonne Date de création -->
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Créée le</th>
+        <td mat-cell *matCellDef="let demande">{{ demande.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+      </ng-container>
+
+      <!-- Colonne Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let demande">
+          <button mat-icon-button color="accent" [matTooltip]="'Consulter la demande'" (click)="viewDemande(demande.id)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button *ngIf="isRSSI || isChangeManager|| isDSI|| isDBU" mat-icon-button color="primary" [matTooltip]="'Prendre une décision'" (click)="navigateToDecision(demande.id)">
+            <mat-icon>gavel</mat-icon> <!-- Icône de prise de décision -->
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- Message si aucune donnée -->
+    <div *ngIf="dataSource.data.length === 0" class="no-data-message">
+      <mat-icon>info</mat-icon>
+      <span>Aucune demande trouvée</span>
     </div>
-  </mat-card-content>
-</mat-card>
+
+    <!-- Pagination -->
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

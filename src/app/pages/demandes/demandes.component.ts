@@ -13,10 +13,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { DemandesService } from '../../services/demandes.service';
 import { AuthService } from '../../services/auth.service';
-import { DemandeModel, Statuts, Priorite } from '../../models/demande-model';
+import { DemandeModel, Statuts, Priorite,Impact,Categorie } from '../../models/demande-model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-demandes',
@@ -33,16 +35,35 @@ import { MatInputModule } from '@angular/material/input';
     MatMenuModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule,MatInputModule,MatFormFieldModule
+    MatSnackBarModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule
   ],
   templateUrl: './demandes.component.html',
   styleUrls: ['./demandes.component.scss']
 })
 export class DemandesComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'client', 'description', 'status', 'priorite', 'createdAt'];
+  displayedColumns: string[] = ['id', 'client', 'description', 'status', 'priorite','niveauImpact','categorie', 'createdAt', 'actions'];
   dataSource = new MatTableDataSource<DemandeModel>();
   isLoading = true;
   isAdmin = false;
+  isRSSI = false;
+  isChangeManager = false;  
+  isDBU = false;
+  isDSI = false;
+
+  
+  // Filtres
+  selectedStatus: string = '';
+  selectedPriority: string = '';
+  selectedImpact: string = '';
+  selectedCategorie: string = '';
+  statuses: Statuts[] = Object.values(Statuts);
+  priorities: Priorite[] = Object.values(Priorite);
+  impacts :Impact[]= Object.values(Impact);
+  categories :Categorie[]= Object.values(Categorie);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -56,19 +77,16 @@ export class DemandesComponent implements OnInit {
 
   ngOnInit(): void {
     this.isAdmin = this.authService.isAdmin();
-    this.adjustColumns();
+    this.isRSSI = this.authService.isRSSI();
+    this.isChangeManager = this.authService.isChange_Manger();
+    this.isDBU = this.authService.isDBU();
+    this.isDSI = this.authService.isDSI();
     this.loadDemandes();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-  }
-
-  adjustColumns(): void {
-   
-      this.displayedColumns.push('actions');
-    
   }
 
   loadDemandes(): void {
@@ -88,28 +106,49 @@ export class DemandesComponent implements OnInit {
     });
   }
 
+  applyFilters(): void {
+    const filteredData = this.dataSource.data.filter(demande => {
+      const matchesStatus = !this.selectedStatus || demande.status === this.selectedStatus;
+      const matchesPriority = !this.selectedPriority || demande.priorite === this.selectedPriority;
+      const matchesImpact = !this.selectedImpact || demande.niveauImpact === this.selectedImpact;
+      const matchesCategorie = !this.selectedCategorie || demande.categorie === this.selectedCategorie;
+
+      return matchesStatus && matchesPriority && matchesImpact && matchesCategorie;
+    });
+
+    this.dataSource.data = filteredData;
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  resetFilters(): void {
+    this.selectedStatus = '';
+    this.selectedPriority = '';
+    this.selectedImpact = '';
+    this.selectedCategorie = '';
+    this.loadDemandes();
+  }
+
   navigateToCreate(): void {
     this.router.navigate(['/home/demandes/nouvelle']);
   }
 
-  editDemande(id: string): void {
-    this.router.navigate(['/home/demandes', id, 'modifier']);
+  viewDemande(id: string): void {
+    this.router.navigate(['/home/demandes/details', id], { queryParams: { mode: 'read' } });
   }
 
-  deleteDemande(id: string): void {
-    // Implémentez la logique de suppression ici
-    console.log('Suppression de la demande', id);
-    this.snackBar.open('Fonctionnalité de suppression à implémenter', 'Fermer', {
-      duration: 3000
-    });
+  navigateToDecision(id: string): void {
+    this.router.navigate(['/home/demandes/details', id, 'decision']);
   }
 
   getStatusClass(status: Statuts): string {
-    return status.toLowerCase().replace('_', '-');
+    return `status-${status.toLowerCase().replace('_', '-')}`;
   }
 
   getPriorityClass(priority: Priorite): string {
-    return priority.toLowerCase();
+    return `priority-${priority.toLowerCase()}`;
   }
 
   applyFilter(event: Event) {
@@ -119,8 +158,5 @@ export class DemandesComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-  }
-  viewDemande(id: string): void {
-    this.router.navigate(['/home/demandes/details', id]);
   }
 }
