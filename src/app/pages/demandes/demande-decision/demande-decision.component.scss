@@ -1,3 +1,35 @@
+/* Styles globaux */
+.detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  .detail-label {
+    font-weight: bold;
+    color: #424242;
+    flex: 1;
+    text-align: left;
+    margin-right: 16px;
+  }
+
+  .custom-input,
+  .custom-textarea,
+  .custom-select {
+    flex: 2;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .custom-textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+}
+
 /* Conteneur principal */
 .demande-details-container {
   padding: 20px;
@@ -32,62 +64,7 @@
   padding: 16px;
 }
 
-/* Style pour les lignes de détail */
-.detail-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-
-  .detail-label {
-    font-weight: bold;
-    color: #424242;
-    flex: 1;
-    text-align: left;
-    margin-right: 16px;
-  }
-
-  mat-form-field {
-    flex: 2;
-    margin-left: 16px;
-    width: 100%;
-  }
-}
-
-/* Supprime les marges ou arrière-plans indésirables */
-mat-form-field {
-  margin: 0;
-  padding: 0;
-  background: transparent;
-}
-
-/* Ajuste les champs en mode édition */
-mat-form-field[appearance="outline"] {
-  background-color: #ffffff; /* Arrière-plan blanc pour les champs éditables */
-  border-radius: 4px;
-}
-
-mat-form-field.mat-focused {
-  background-color: #ffffff;
-  border: 1px solid #3f51b5;
-}
-
-/* Style pour les sections de risque */
-.risk-section {
-  margin-bottom: 16px;
-
-  h3 {
-    font-size: 1.2rem;
-    color: #3f51b5;
-    margin-bottom: 8px;
-  }
-
-  .detail-row {
-    margin-bottom: 12px;
-  }
-}
-
-/* Style pour les boutons */
+/* Boutons */
 .actions-container {
   display: flex;
   justify-content: flex-end;
@@ -119,4 +96,9 @@ button[color="primary"]:hover {
 
 button[color="warn"]:hover {
   background-color: #d32f2f;
+}
+
+/* Style pour les sections de risque */
+.risk-section {
+  margin-top: 10px;
 }
