@@ -1,4 +1,4 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, ViewEncapsulation ,LOCALE_ID} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { UserModel } from '../user.model';
@@ -14,6 +14,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 
 @Component({
   standalone: true,
@@ -33,13 +34,14 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
-    MatSlideToggleModule
-  ],encapsulation: ViewEncapsulation.None,
+    MatSlideToggleModule,
+  ],encapsulation: ViewEncapsulation.None
+  
 })
 export class UserModalComponent {
   userForm: FormGroup;
   hidePassword = true;
-  rolesList = ['ADMIN', 'REQUESTER', 'CHANGE_MANAGER', 'RSSI', 'DBU', 'DSI', 'EXECUTOR'];
+  rolesList = ['ADMIN', 'DEMANDEUR', 'CHANGE_MANAGER', 'RSSI', 'DBU', 'DSI', 'EXECUTEUR'];
 
   constructor(
     public dialogRef: MatDialogRef<UserModalComponent>,

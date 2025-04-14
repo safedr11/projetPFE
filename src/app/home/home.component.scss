@@ -28,3 +28,8 @@
 .spacer {
     flex: 1 1 auto;
 }
+.login-logo {
+    display: block !important;
+    margin: 0 auto !important; /* Centre horizontalement */
+    max-width: 100% !important; /* S'assure que le logo ne dépasse pas les limites */
+  }

@@ -41,7 +41,7 @@ import { UserModalComponent } from '../user-modal/user-modal.component';
 })
 export class UtilisateursComponent implements OnInit {
   users: UserModel[] = [];
-  roles: string[] = ['ROLE_ADMIN', 'ROLE_REQUESTER', 'ROLE_ChangeManager', 'ROLE_RSSI', 'ROLE_DBU', 'ROLE_DSI', 'ROLE_EXECUTER'];
+  roles: string[] = ['ROLE_ADMIN', 'ROLE_DEMANDEUR', 'ROLE_ChangeManager', 'ROLE_RSSI', 'ROLE_DBU', 'ROLE_DSI', 'ROLE_EXECUTEuR'];
   selectedRole: string = '';
   selectedStatus: boolean | null = null;
   displayedColumns: string[] = ['id', 'fullName', 'email', 'roles', 'createdAt', 'updatedAt', 'status', 'actions'];

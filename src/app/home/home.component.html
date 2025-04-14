@@ -3,7 +3,7 @@
     <button mat-icon-button (click)="sidenav.toggle();">
       <mat-icon>menu</mat-icon>
     </button>
-    <h1>Change Managemant Application</h1>
+    <h1>Gestion des changements</h1>
     <span class="spacer"></span>
     <button mat-icon-button>
       <mat-icon>notifications</mat-icon>
@@ -22,8 +22,8 @@
 </mat-toolbar>
 <mat-sidenav-container>
   <mat-sidenav #sidenav opened mode="side" [style.width.px]="200">
-    <img src="assets/wevioo_logo.png" alt="Wevioo Logo" class="login-logo">
-    <mat-nav-list>  
+    <img src="assets/wevioo_logo.png" alt="Wevioo Logo" class="login-logo" style="margin-top: 16px !important;" />
+    <mat-nav-list style="margin-top: 16px;">  
        @for(item of filteredMenuItems; track $index){
       <a mat-list-item [routerLink]="item.route">
         <mat-icon matListItemIcon>{{item.icon}}</mat-icon>

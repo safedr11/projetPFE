@@ -55,12 +55,12 @@
     <!-- Dates (en lecture seule) -->
     <mat-form-field appearance="outline" class="full-width" *ngIf="!data.isNew">
       <mat-label>Date de création</mat-label>
-      <input matInput [value]="userForm.get('createdAt')?.value | date: 'medium'" readonly>
+      <input matInput [value]="userForm.get('createdAt')?.value | date: 'short'" readonly>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width" *ngIf="!data.isNew">
       <mat-label>Dernière mise à jour</mat-label>
-      <input matInput [value]="userForm.get('updatedAt')?.value | date: 'medium'" readonly>
+      <input matInput [value]="userForm.get('updatedAt')?.value | date: 'short'" readonly>
     </mat-form-field>
   </form>
 </mat-dialog-content>
