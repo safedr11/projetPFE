@@ -89,13 +89,13 @@
       <!-- Colonne Date de Création -->
       <ng-container matColumnDef="createdAt">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de Création</th>
-        <td mat-cell *matCellDef="let user">{{ user.createdAt | date: 'short' }}</td>
+        <td mat-cell *matCellDef="let user">{{ user.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
       </ng-container>
 
       <!-- Colonne Dernière Mise à Jour -->
       <ng-container matColumnDef="updatedAt">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Dernière Mise à Jour</th>
-        <td mat-cell *matCellDef="let user">{{ user.updatedAt | date: 'short' }}</td>
+        <td mat-cell *matCellDef="let user">{{ user.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</td>
       </ng-container>
 
       <!-- Colonne Actions -->

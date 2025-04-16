@@ -132,6 +132,12 @@ export class AuthService {
 
 }
 
+private readonly TOKEN_KEY = 'token';
+
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+
 isDSI(): boolean {
   try {
       const token = localStorage.getItem('token');

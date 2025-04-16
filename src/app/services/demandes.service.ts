@@ -34,6 +34,10 @@ export class DemandesService {
   getDemandeById(id: string): Observable<DemandeModel> {
     return this.http.get<DemandeModel>(`${this.apiUrl}/affich/${id}`);
   }
+ 
   
+  validerDemande(id: string, demande: DemandeModel, approuve: boolean): Observable<{ message: string }> {
+    return this.http.put<{ message: string }>(`${this.apiUrl}/valider/${id}?approuve=${approuve}`, demande);
+  }
   
 }

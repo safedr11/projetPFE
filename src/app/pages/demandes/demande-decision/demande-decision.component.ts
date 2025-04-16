@@ -42,7 +42,7 @@ export class DemandeDecisionComponent implements OnInit {
   impactLevels = Object.values(Impact);
   priorities = Object.values(Priorite);
   categories = Object.values(Categorie);
-
+  demandeId: string | null = null;
   constructor(
     private route: ActivatedRoute,
     private demandesService: DemandesService,
@@ -52,6 +52,8 @@ export class DemandeDecisionComponent implements OnInit {
   ngOnInit(): void {
     // Récupère l'ID de la demande depuis l'URL
     const id = this.route.snapshot.paramMap.get('id');
+    this.demandeId = this.route.snapshot.paramMap.get('id');
+    console.log('ID de la demande:', id);
     const isDecisionRoute = this.route.snapshot.url.some(segment => segment.path === 'decision');
     this.isEditable = isDecisionRoute; // Active le mode édition si la route contient "decision"
 
@@ -77,19 +79,31 @@ export class DemandeDecisionComponent implements OnInit {
     window.history.back();
   }
 
-  // Méthode pour approuver la demande
+  
   approveDemande(): void {
-    if (this.demande) {
-      console.log('Demande approuvée:', this.demande);
-      this.snackBar.open('Demande approuvée avec succès.', 'Fermer', { duration: 3000 });
+    if (this.demande && this.demandeId) {
+      this.demandesService.validerDemande(this.demandeId, this.demande, true).subscribe({
+        next: (response) => {
+          this.snackBar.open(response.message, 'Fermer', { duration: 3000 });
+          this.goBack();
+        },
+        error: (err) => {
+          console.error('Erreur backend :', err);
+          this.snackBar.open('Erreur lors de la validation.', 'Fermer', { duration: 3000 });
+        }
+      });
     }
   }
-
-  // Méthode pour rejeter la demande
   rejectDemande(): void {
-    if (this.demande) {
-      console.log('Demande rejetée:', this.demande);
-      this.snackBar.open('Demande rejetée avec succès.', 'Fermer', { duration: 3000 });
+    if (this.demande && this.demandeId) {
+      this.demandesService.validerDemande(this.demandeId, this.demande, false).subscribe({
+        next: (response) => {
+          this.snackBar.open(response.message, 'Fermer', { duration: 3000 });
+          this.goBack();
+        },
+        error: () => {
+          this.snackBar.open('Erreur lors du rejet.', 'Fermer', { duration: 3000 });
+        }
+      });
     }
-  }
-}
+  }}

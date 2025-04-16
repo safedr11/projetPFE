@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button'; // Optionnel, si vou
 import { MatIconModule } from '@angular/material/icon'; 
 import { MatListModule } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
+import { StompService } from '../services/stomp.service';
 @Component({
   selector: 'app-home',
   standalone: true, // Composant standalone
@@ -21,22 +22,29 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./home.component.scss'],
   imports: [CommonModule,HttpClientModule,MatSidenavModule,
     MatButtonModule, // Option,
-    MatIconModule,RouterModule,MatToolbarModule,MatButtonModule,MatListModule,MatMenuModule],
+    MatIconModule,RouterModule,MatToolbarModule,MatButtonModule,MatListModule,MatMenuModule] // Importer les modules nécessaires,
 })
 export class HomeComponent {
  
   userEmail: string | null = null;
   userRole: string | null = null;
+  notifications: string[] = [];
   constructor(
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private stompService: StompService
   ) {
     // Simuler la récupération de l'email de l'utilisateur (à remplacer par une vraie logique)
     this.userEmail = localStorage.getItem('userEmail');
     this.userRole = localStorage.getItem('userRole');
   }
-   
+  ngOnInit(): void {
+    // Se connecter et récupérer les notifications
+    this.stompService.getNotifications().subscribe((notifications) => {
+      this.notifications = notifications;
+    });
+  }
 
   menuItems: any[] = [
     {
@@ -49,13 +57,13 @@ export class HomeComponent {
       icon: 'inventory', // Icône pour le catalogue
       label: 'Catalogue',
       route: 'catalogue',
-      roles: ['ADMIN','REQUESTER','CHANGE_MANAGER','RSSI','DBU','DSI','EXECUTER']
+      roles: ['ADMIN','DEMANDEUR','CHANGE_MANAGER','RSSI','DBU','DSI','EXECUTER']
     },
     {
       icon: 'description', // Icône pour les demandes
       label: 'Demandes',
       route: 'demandes',
-      roles: ['REQUESTER','ADMIN','CHANGE_MANAGER','RSSI','DBU','DSI','EXECUTER']
+      roles: ['DEMANDEUR','ADMIN','CHANGE_MANAGER','RSSI','DBU','DSI','EXECUTER']
     },
   
     
