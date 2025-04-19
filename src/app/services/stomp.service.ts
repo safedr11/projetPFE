@@ -34,7 +34,7 @@ export class StompService {
         'X-Authorization': `Bearer ${jwtToken}` // Header alternatif
       };
   
-      this.stompClient.connect(
+      this.stompClient.connect( 
         headers, // Envoi des headers d'authentification
         (frame?: Stomp.Frame) => {
           console.log('Connecté avec succès:', frame);
@@ -73,18 +73,26 @@ export class StompService {
   }
   
   private subscribeToNotifications(): void {
+    console.log('Notification reçue:0');
     if (this.stompClient) {
-      this.stompClient.subscribe(
-        '/user/queue/notifications',
+      console.log('Notification reçue:2')
+
+      this.stompClient.subscribe(//user connecté
+        '/user/2/user2/notification',
         (message: Stomp.Message) => {
+          console.log('Notification reçue:1')
+          console.log('Notification reçue:', message.body);
           this.handleNotification(message.body);
         }
       );
+    }else {
+      console.error('Client STOMP non initialisé');
     }
   }
 
   private handleNotification(body: string): void {
     try {
+      console.log('Notification reçue:', body);
       const notifications = JSON.parse(body);
       this.notificationsSubject.next(notifications);
     } catch (e) {
