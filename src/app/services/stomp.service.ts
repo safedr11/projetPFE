@@ -93,13 +93,19 @@ export class StompService {
   private handleNotification(body: string): void {
     try {
       console.log('Notification reçue:', body);
-      const notifications = JSON.parse(body);
+      let notifications = JSON.parse(body);
+  
+      // Si les notifications ne sont pas un tableau, transformez-les
+      if (!Array.isArray(notifications)) {
+        notifications = [notifications];
+      }
+  
       this.notificationsSubject.next(notifications);
     } catch (e) {
+      console.error('Erreur lors du parsing des notifications:', e);
       this.notificationsSubject.next([body]);
     }
   }
-
   public getNotifications(): Observable<string[]> {
     return this.notificationsSubject.asObservable();
   }

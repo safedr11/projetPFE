@@ -21,6 +21,8 @@ export class AuthService {
             localStorage.setItem('token', response.access_token);
             const decodedToken = this.decodeToken(response.access_token);
             localStorage.setItem('userRole', decodedToken.role);
+            localStorage.setItem('email', decodedToken.sub);
+            console.log("l'email :", decodedToken.sub);
             console.log("Token stocké :", response.access_token);
             console.log("le role :", decodedToken.role);
           } else {

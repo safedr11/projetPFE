@@ -28,7 +28,7 @@ export class HomeComponent {
  
   userEmail: string | null = null;
   userRole: string | null = null;
-  notifications: string[] = [];
+  
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -39,14 +39,20 @@ export class HomeComponent {
     this.userEmail = localStorage.getItem('userEmail');
     this.userRole = localStorage.getItem('userRole');
   }
-  ngOnInit(): void {
-    // Se connecter et récupérer les notifications
-    this.stompService.getNotifications().subscribe((notifications) => {
-      this.notifications = notifications;
-    });
-  }
 
-  menuItems: any[] = [
+  notifications: { title: string; message: string }[] = [];
+
+  ngOnInit(): void {
+    this.stompService.getNotifications().subscribe({
+      next: (data: any[]) => {
+        this.notifications = data.map(notification => ({
+          title: 'Notification', // Titre par défaut
+          message: notification.message,
+        }));
+      },
+      error: (err) => console.error('Erreur lors de la réception des notifications:', err),
+    });
+  }  menuItems: any[] = [
     {
       icon: 'person',  // Icône pour les utilisateurs
       label: 'Utilisateurs',

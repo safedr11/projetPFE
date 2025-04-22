@@ -33,3 +33,7 @@
     margin: 0 auto !important; /* Centre horizontalement */
     max-width: 100% !important; /* S'assure que le logo ne dépasse pas les limites */
   }
+  mat-list-item {
+    white-space: normal; /* Permet d'afficher le texte sur plusieurs lignes */
+    word-wrap: break-word; /* Coupe les mots longs si nécessaire */
+  }
