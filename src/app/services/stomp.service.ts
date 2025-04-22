@@ -10,7 +10,8 @@ import { AuthService } from './auth.service'; // Assurez-vous que le chemin est 
 export class StompService {
   private stompClient: Stomp.Client | null = null;
   private notificationsSubject = new Subject<string[]>(); // Utilisation d'un Subject pour émettre les notifications
-
+  private mail= localStorage.getItem('email');
+ 
   constructor(private authService: AuthService) {
     this.connect();
   }
@@ -76,9 +77,9 @@ export class StompService {
     console.log('Notification reçue:0');
     if (this.stompClient) {
       console.log('Notification reçue:2')
-
+      console.log('Email utilisé pour le topic:', this.mail); 
       this.stompClient.subscribe(//user connecté
-        '/user/2/user2/notification',
+        `/user/${this.mail}/notification`,
         (message: Stomp.Message) => {
           console.log('Notification reçue:1')
           console.log('Notification reçue:', message.body);

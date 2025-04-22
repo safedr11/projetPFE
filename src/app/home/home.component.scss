@@ -33,7 +33,26 @@
     margin: 0 auto !important; /* Centre horizontalement */
     max-width: 100% !important; /* S'assure que le logo ne dépasse pas les limites */
   }
+  .new-notification {
+    color: black !important;
+  }
+  
+  mat-menu {
+    min-width: 300px;
+  }
+  
   mat-list-item {
-    white-space: normal; /* Permet d'afficher le texte sur plusieurs lignes */
-    word-wrap: break-word; /* Coupe les mots longs si nécessaire */
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: initial !important;
+    height: auto !important;
+    padding: 8px 16px;
+  }
+  
+  mat-list-item strong {
+    display: inline !important;
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
   }
