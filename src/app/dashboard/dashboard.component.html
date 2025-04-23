@@ -1,0 +1,230 @@
+<div class="container">
+    <!-- Controls -->
+    <div class="controls">
+      <div class="view-toggles">
+        <mat-slide-toggle
+          [(ngModel)]="showTable"
+          (change)="toggleView()"
+          aria-label="Basculer entre la vue graphique et la vue tableau"
+        >
+          Vue Tableau
+        </mat-slide-toggle>
+        <mat-slide-toggle
+          [checked]="chartType() === 'pie'"
+          (change)="toggleChartType()"
+          [disabled]="showTable()"
+          aria-label="Basculer entre les graphiques en barres et en secteurs"
+        >
+          Graphique en Secteurs
+        </mat-slide-toggle>
+      </div>
+      <div class="action-buttons">
+        <button
+          mat-icon-button
+          (click)="loadStats(true)"
+          matTooltip="Rafraîchir les statistiques"
+          aria-label="Rafraîchir les statistiques"
+        >
+          <mat-icon>refresh</mat-icon>
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="exportStats()"
+          [disabled]="!stats() || loading()"
+          matTooltip="Exporter les statistiques en CSV"
+        >
+          Exporter en CSV
+        </button>
+      </div>
+    </div>
+  
+    <!-- Charts View -->
+    <mat-grid-list [cols]="gridCols()" rowHeight="400px" gutterSize="16" *ngIf="!showTable() && !loading() && !error(); else altView">
+      <!-- Impact Chart -->
+      <mat-grid-tile>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Par Impact</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ng-container *ngIf="impactChartData().labels?.length; else noData">
+              <div class="chart-container" *ngIf="chartType() as type">
+                <canvas
+                  baseChart
+                  [data]="impactChartData()"
+                  [options]="chartOptions"
+                  [type]="type"
+                  height="300"
+                  aria-label="Graphique des statistiques par impact"
+                  role="img"
+                ></canvas>
+              </div>
+            </ng-container>
+            <ng-template #noData>
+              <p>Aucune donnée disponible</p>
+            </ng-template>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+  
+      <!-- Priority Chart -->
+      <mat-grid-tile>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Par Priorité</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ng-container *ngIf="prioriteChartData().labels?.length; else noData">
+              <div class="chart-container" *ngIf="chartType() as type">
+                <canvas
+                  baseChart
+                  [data]="prioriteChartData()"
+                  [options]="chartOptions"
+                  [type]="type"
+                  height="300"
+                  aria-label="Graphique des statistiques par priorité"
+                  role="img"
+                ></canvas>
+              </div>
+            </ng-container>
+            <ng-template #noData>
+              <p>Aucune donnée disponible</p>
+            </ng-template>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+  
+      <!-- Source Chart -->
+      <mat-grid-tile>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Par Source</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ng-container *ngIf="sourceChartData().labels?.length; else noData">
+              <div class="chart-container" *ngIf="chartType() as type">
+                <canvas
+                  baseChart
+                  [data]="sourceChartData()"
+                  [options]="chartOptions"
+                  [type]="type"
+                  height="300"
+                  aria-label="Graphique des statistiques par source"
+                  role="img"
+                ></canvas>
+              </div>
+            </ng-container>
+            <ng-template #noData>
+              <p>Aucune donnée disponible</p>
+            </ng-template>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+  
+      <!-- Status Chart -->
+      <mat-grid-tile>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Par Statut</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ng-container *ngIf="statutChartData().labels?.length; else noData">
+              <div class="chart-container" *ngIf="chartType() as type">
+                <canvas
+                  baseChart
+                  [data]="statutChartData()"
+                  [options]="chartOptions"
+                  [type]="type"
+                  height="300"
+                  aria-label="Graphique des statistiques par statut"
+                  role="img"
+                ></canvas>
+              </div>
+            </ng-container>
+            <ng-template #noData>
+              <p>Aucune donnée disponible</p>
+            </ng-template>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  
+    <!-- Alternative Views -->
+    <ng-template #altView>
+      <!-- Table View -->
+      <ng-container *ngIf="!loading() && !error() && showTable()">
+        <table mat-table [dataSource]="stats() ? [stats()] : []" class="mat-elevation-z2">
+          <ng-container matColumnDef="impact">
+            <th mat-header-cell *matHeaderCellDef>Impact</th>
+            <td mat-cell *matCellDef="let row">
+              <ul>
+                <li *ngFor="let item of row.parImpact | keyvalue">
+                  {{ item.key }}: {{ item.value }}
+                </li>
+              </ul>
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="priorite">
+            <th mat-header-cell *matHeaderCellDef>Priorité</th>
+            <td mat-cell *matCellDef="let row">
+              <ul>
+                <li *ngFor="let item of row.parPriorite | keyvalue">
+                  {{ item.key }}: {{ item.value }}
+                </li>
+              </ul>
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="source">
+            <th mat-header-cell *matHeaderCellDef>Source</th>
+            <td mat-cell *matCellDef="let row">
+              <ul>
+                <li *ngFor="let item of row.parSource | keyvalue">
+                  {{ item.key }}: {{ item.value }}
+                </li>
+              </ul>
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="statut">
+            <th mat-header-cell *matHeaderCellDef>Statut</th>
+            <td mat-cell *matCellDef="let row">
+              <ul>
+                <li *ngFor="let item of row.parStatut | keyvalue">
+                  {{ item.key }}: {{ item.value }}
+                </li>
+              </ul>
+            </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="['impact', 'priorite', 'source', 'statut']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['impact', 'priorite', 'source', 'statut'];"></tr>
+        </table>
+      </ng-container>
+  
+      <!-- Loading Skeleton -->
+      <ng-container *ngIf="loading()">
+        <mat-grid-list [cols]="gridCols()" rowHeight="400px" gutterSize="16">
+          <mat-grid-tile *ngFor="let _ of [1, 2, 3, 4]">
+            <mat-card class="skeleton-card">
+              <mat-card-header>
+                <mat-card-title>
+                  <div class="skeleton-title"></div>
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="skeleton-chart"></div>
+              </mat-card-content>
+            </mat-card>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </ng-container>
+  
+      <!-- Error State -->
+      <div *ngIf="error()" class="error">
+        <p>{{ error() }}</p>
+      </div>
+    </ng-template>
+  </div>

@@ -73,6 +73,12 @@ export class HomeComponent implements OnInit {
       route: 'demandes',
       roles: ['DEMANDEUR', 'ADMIN', 'CHANGE_MANAGER', 'RSSI', 'DBU', 'DSI', 'EXECUTER']
     },
+    {
+      icon: 'dashboard',
+      label: 'overview',
+      route: 'overview',
+      roles: ['DEMANDEUR']
+    },
   ];
 
   constructor(

@@ -1,0 +1,142 @@
+.container {
+    padding: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .view-toggles {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+  }
+  
+  mat-grid-list {
+    margin: 0;
+  }
+  
+  mat-card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  mat-card-header {
+    padding: 16px;
+  }
+  
+  mat-card-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+  
+  mat-card-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+  }
+  
+  .chart-container {
+    width: 100%;
+    height: 300px;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards;
+  }
+  
+  canvas {
+    max-height: 300px;
+    width: 100%;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .skeleton-card {
+    background: #f5f5f5;
+  }
+  
+  .skeleton-title {
+    width: 60%;
+    height: 20px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    animation: skeleton-loading 1s infinite;
+  }
+  
+  .skeleton-chart {
+    width: 100%;
+    height: 200px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    animation: skeleton-loading 1s infinite;
+  }
+  
+  @keyframes skeleton-loading {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+  }
+  
+  table {
+    width: 100%;
+    margin-top: 16px;
+  }
+  
+  th {
+    font-weight: 500;
+    background: #f5f5f5;
+  }
+  
+  td {
+    padding: 8px;
+    vertical-align: top;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  li {
+    padding: 4px 0;
+  }
+  
+  .error {
+    color: #d32f2f;
+    text-align: center;
+    margin: 16px;
+    min-height: 400px;
+    font-size: 1.1rem;
+  }
+  
+  p {
+    text-align: center;
+    color: #666;
+    margin: 0;
+  }

@@ -12,6 +12,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { DemandeFormComponent } from './pages/demandes/demande-form/demande-form.component';
 import { ConsultationDemandeComponent } from './pages/demandes/consultation-demande/consultation-demande.component';
 import { DemandeDecisionComponent } from './pages/demandes/demande-decision/demande-decision.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent },
@@ -29,9 +30,13 @@ export const routes: Routes = [
           { path: 'nouvelle', component: DemandeFormComponent }, // /home/demandes/nouvelle
           { path: ':id/modifier', component: DemandeFormComponent },
           { path: 'details/:id', component: ConsultationDemandeComponent },
-          { path: 'decision/:id', component:DemandeDecisionComponent }
+          { path: 'decision/:id', component:DemandeDecisionComponent },
+         
+          
         ]
-      }
+
+      },
+      { path: 'overview', component:DashboardComponent },
     ]
   },
   { path: 'forgot-password', component: ForgotPasswordComponent },
