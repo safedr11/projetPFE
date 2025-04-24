@@ -12,10 +12,12 @@ import {  withFetch } from '@angular/common/http';
 import { authInterceptor } from './app/interceptors/auth.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 bootstrapApplication(AppComponent, {
   providers: [
+    MatNativeDateModule,
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])), provideAnimationsAsync('noop'), // Fournit HttpClient pour toute l'application
  provideClientHydration(), provideAnimationsAsync(),MatChipsModule] // Fournit le service de client hydration],

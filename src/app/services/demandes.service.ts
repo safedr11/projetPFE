@@ -59,10 +59,24 @@ export class DemandesService {
         return of(this.statsCache);
       }
     }
-
-    return this.http.get<DemandeAttributeStatsDTO>(`${this.apiUrl}/stats`).pipe(
+  
+    let statsUrl = `${this.apiUrl}/stats`; // valeur par défaut
+  
+    if (
+      this.authService.isAdmin() ||
+      this.authService.isChange_Manger() ||
+      this.authService.isRSSI() ||
+      this.authService.isDBU() ||
+      this.authService.isDSI()
+    ) {
+      statsUrl = `${this.apiUrl}/stats/all`;
+    } else {
+      statsUrl = `${this.apiUrl}/stats`;
+    }
+  
+    return this.http.get<DemandeAttributeStatsDTO>(statsUrl).pipe(
       retry(2),
-      tap((data: DemandeAttributeStatsDTO) => { // Add type for 'data'
+      tap((data: DemandeAttributeStatsDTO) => {
         this.statsCache = data;
         this.cacheTimestamp = Date.now();
       }),
@@ -72,7 +86,6 @@ export class DemandesService {
       })
     );
   }
-
   clearStatsCache(): void {
     this.statsCache = null;
     this.cacheTimestamp = null;

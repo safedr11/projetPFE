@@ -43,7 +43,8 @@ export interface User {
     Mineur = 'Mineur',
     Significatif = 'Significatif',
     Majeur_Applicatif = 'Majeur_Applicatif',
-    Majeur_Non_Applicatif = 'Majeur_Non_Applicatif'
+    Majeur_Non_Applicatif = 'Majeur_Non_Applicatif',
+    Standard="Standard"
   }
   
   export enum Impact {

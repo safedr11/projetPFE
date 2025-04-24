@@ -53,6 +53,9 @@ export class HomeComponent implements OnInit {
   notifications: { title: string; message: string }[] = [];
   hasNewNotifications: boolean = false;
   shakeState: string = 'inactive';
+  
+  // Ajouter une propriété pour l'audio
+  private notificationSound: HTMLAudioElement;
 
   menuItems: any[] = [
     {
@@ -75,9 +78,9 @@ export class HomeComponent implements OnInit {
     },
     {
       icon: 'dashboard',
-      label: 'overview',
+      label: 'Overview',
       route: 'overview',
-      roles: ['DEMANDEUR']
+      roles: ['DEMANDEUR', 'ADMIN', 'CHANGE_MANAGER', 'RSSI', 'DBU', 'DSI', 'EXECUTER']
     },
   ];
 
@@ -89,6 +92,8 @@ export class HomeComponent implements OnInit {
   ) {
     this.userEmail = localStorage.getItem('userEmail');
     this.userRole = localStorage.getItem('userRole');
+    // Initialiser l'audio avec le chemin du fichier
+    this.notificationSound = new Audio('/assets/simple-notification-152054.mp3');
   }
 
   ngOnInit(): void {
@@ -101,8 +106,18 @@ export class HomeComponent implements OnInit {
         this.notifications = [...newNotifications, ...this.notifications];
         this.hasNewNotifications = true;
         this.shakeState = 'active';
+        
+        // Jouer le son lorsqu'une nouvelle notification est reçue
+        this.playNotificationSound();
       },
       error: (err) => console.error('Erreur lors de la réception des notifications:', err),
+    });
+  }
+
+  // Méthode pour jouer le son
+  private playNotificationSound(): void {
+    this.notificationSound.play().catch(error => {
+      console.error('Erreur lors de la lecture du son de notification:', error);
     });
   }
 

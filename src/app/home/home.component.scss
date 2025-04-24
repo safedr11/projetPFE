@@ -56,3 +56,16 @@
   .spacer {
     flex: 1 1 auto;
   }
+  ::ng-deep .mat-mdc-list-item-unscoped-content {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    display: block !important;
+  }
+  
+  ::ng-deep .mat-mdc-list-item-content,
+  ::ng-deep .mdc-list-item__primary-text {
+    height: auto !important;
+    line-height: 1.5 !important;
+    display: block !important;
+  }

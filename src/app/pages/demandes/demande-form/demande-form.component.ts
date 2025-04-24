@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { FrenchDatePipe } from '../french-date.pipe';
 import { 
   DemandeModel, 
@@ -42,6 +43,7 @@ import {
     MatStepperModule, 
     MatFormFieldModule,
     MatDatepickerModule,
+    MatNativeDateModule, 
     CommonModule,
    /* FrenchDatePipe*/
   ]

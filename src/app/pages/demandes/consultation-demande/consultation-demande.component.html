@@ -185,7 +185,8 @@
           </div>
           <div class="detail-row">
             <span class="detail-label">Date planifiée:</span>
-            <span>{{ action.plannedDate | frenchDate }}</span>
+            <span>{{ action.plannedDate ? (action.plannedDate | date: 'dd/MM/yyyy') : 'Non planifiée' }}</span>
+
           </div>
           <div class="detail-row">
             <span class="detail-label">Type d'action:</span>
