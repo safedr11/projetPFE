@@ -16,10 +16,11 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common'; 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { MatExpansionModule } from '@angular/material/expansion';
-import { FrenchDatePipe } from '../french-date.pipe';
+
 import { MatSelectModule } from '@angular/material/select'; 
+import { MatStepperModule } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-consultation-demande',
@@ -41,7 +42,8 @@ import { MatSelectModule } from '@angular/material/select';
     CommonModule,
     FormsModule,
     MatSelectModule,
-    FrenchDatePipe
+    MatStepperModule,
+    
   ],
   templateUrl: './consultation-demande.component.html',
   styleUrl: './consultation-demande.component.scss'

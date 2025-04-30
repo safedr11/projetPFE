@@ -29,7 +29,7 @@ export class LoginComponent {
       next: (response) => {
         console.log('Login successful', response);
         this.authStateService.setAuthenticated(true);
-        this.router.navigate(['/home']); // Rediriger vers le tableau de bord
+        this.router.navigate(['/home/overview']); // Rediriger vers le tableau de bord
       },
       error: (error) => {
         console.error('Login failed', error);

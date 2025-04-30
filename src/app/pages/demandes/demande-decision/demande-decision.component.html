@@ -5,219 +5,255 @@
 <div *ngIf="!loading && demande" class="demande-details-container">
   <h2>Prise de Décision</h2>
 
-  <!-- Section Informations de base -->
-  <mat-card class="section-card">
-    <mat-card-header>
-      <mat-card-title>Informations de base</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="detail-row">
-        <span class="detail-label">Demandeur:</span>
-        <input [(ngModel)]="demande.demandeur" class="custom-input" />
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">Client:</span>
-        <input [(ngModel)]="demande.client" class="custom-input" />
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">Source de changement:</span>
-        <input [(ngModel)]="demande.sourceDeChangement" class="custom-input" />
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">Description:</span>
-        <textarea [(ngModel)]="demande.description" class="custom-textarea"></textarea>
-      </div>
-    </mat-card-content>
-  </mat-card>
-
-  <!-- Section Étude de la demande -->
-  <mat-card class="section-card">
-    <mat-card-header>
-      <mat-card-title>Étude de la demande</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="detail-row">
-        <span class="detail-label">Service(s) impacté(s):</span>
-        <input [(ngModel)]="demande.impactedInfrastructure" class="custom-input" />
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">Niveau d'impact:</span>
-        <mat-select [(ngModel)]="demande.niveauImpact" placeholder="Sélectionnez un niveau d'impact" class="custom-select">
-          <mat-option *ngFor="let impact of impactLevels" [value]="impact">
-            {{ impact }}
-          </mat-option>
-        </mat-select>
-      </div>
-      
-      <div class="detail-row">
-        <span class="detail-label">Priorité:</span>
-        <mat-select [(ngModel)]="demande.priorite" placeholder="Sélectionnez une priorité" class="custom-select">
-          <mat-option *ngFor="let priority of priorities" [value]="priority">
-            {{ priority }}
-          </mat-option>
-        </mat-select>
-      </div>
-      
-      <div class="detail-row">
-        <span class="detail-label">Catégorie:</span>
-        <mat-select [(ngModel)]="demande.categorie" placeholder="Sélectionnez une catégorie" class="custom-select">
-          <mat-option *ngFor="let categorie of categories" [value]="categorie">
-            {{ categorie }}
-          </mat-option>
-        </mat-select>
-      </div>
-
-  <!-- Section Ressources -->
-  <mat-card class="section-card" *ngIf="demande.ressources">
-    <mat-card-header>
-      <mat-card-title>Ressources nécessaires</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="detail-row">
-        <span class="detail-label">Ressources humaines:</span>
-        <input [(ngModel)]="demande.ressources.humanResources" class="custom-input" />
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">Ressources matérielles:</span>
-        <input [(ngModel)]="demande.ressources.materialResources" class="custom-input" />
-      </div>
-    </mat-card-content>
-  </mat-card>
-
-  <!-- Section Évaluation des risques -->
-  <mat-card class="section-card" *ngIf="demande.riskAssessment">
-    <mat-card-header>
-      <mat-card-title>Évaluation des risques</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div *ngIf="demande.riskAssessment.disponibilite" class="risk-section">
-        <h3>Disponibilité</h3>
-        <div class="detail-row">
-          <span class="detail-label">Description:</span>
-          <textarea [(ngModel)]="demande.riskAssessment.disponibilite.description" class="custom-textarea"></textarea>
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Impact:</span>
-          <input [(ngModel)]="demande.riskAssessment.disponibilite.impactValue" class="custom-input" />
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Probabilité:</span>
-          <input [(ngModel)]="demande.riskAssessment.disponibilite.probability" class="custom-input" />
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Criticité:</span>
-          <input [(ngModel)]="demande.riskAssessment.disponibilite.criticity" class="custom-input" />
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Commentaires RSSI:</span>
-          <textarea [(ngModel)]="demande.riskAssessment.disponibilite.rssiComments" class="custom-textarea"></textarea>
-        </div>
-      </div>
-
-
-      <div *ngIf="demande.riskAssessment.confidentialite" class="risk-section">
-        <h3>Confidentialité</h3>
-        <div class="detail-row">
-          <span class="detail-label">Description:</span>
-          <textarea [(ngModel)]="demande.riskAssessment.confidentialite.description" class="custom-textarea"></textarea>
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Impact:</span>
-          <input [(ngModel)]="demande.riskAssessment.confidentialite.impactValue" class="custom-input" />
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Probabilité:</span>
-          <input [(ngModel)]="demande.riskAssessment.confidentialite.probability" class="custom-input" />
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Criticité:</span>
-          <input [(ngModel)]="demande.riskAssessment.confidentialite.criticity" class="custom-input" />
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Commentaires RSSI:</span>
-          <textarea [(ngModel)]="demande.riskAssessment.confidentialite.rssiComments" class="custom-textarea"></textarea>
-        </div>
-      </div>
-
-
-      <div *ngIf="demande.riskAssessment.confidentialite" class="risk-section">
-        <h3>Intégrité</h3>
-        <div class="detail-row">
-          <span class="detail-label">Description:</span>
-          <textarea [(ngModel)]="demande.riskAssessment.integrite.description" class="custom-textarea"></textarea>
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Impact:</span>
-          <input [(ngModel)]="demande.riskAssessment.integrite.impactValue" class="custom-input" />
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Probabilité:</span>
-          <input [(ngModel)]="demande.riskAssessment.integrite.probability" class="custom-input" />
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Criticité:</span>
-          <input [(ngModel)]="demande.riskAssessment.integrite.criticity" class="custom-input" />
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Commentaires RSSI:</span>
-          <textarea [(ngModel)]="demande.riskAssessment.integrite.rssiComments" class="custom-textarea"></textarea>
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
-
-  <!-- Section Actions techniques -->
-  <mat-card class="section-card" *ngIf="demande.technicalActions && demande.technicalActions.length > 0">
-    <mat-card-header>
-      <mat-card-title>Actions techniques</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-accordion>
-        <mat-expansion-panel style="margin-bottom: 
-        15px;" *ngFor="let action of demande.technicalActions">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
+  <mat-horizontal-stepper linear #stepper>
+    <!-- Step 1: Informations de base -->
+    <mat-step label="Informations de base">
+      <form>
+        <mat-card class="section-card">
+          <mat-card-header>
+            <mat-card-title>Informations de base</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="detail-row">
+              <span class="detail-label">Demandeur:</span>
+              <input [(ngModel)]="demande.demandeur" name="demandeur" class="custom-input" />
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Client:</span>
+              <input [(ngModel)]="demande.client" name="client" class="custom-input" />
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Source de changement:</span>
+              <input [(ngModel)]="demande.sourceDeChangement" name="sourceDeChangement" class="custom-input" />
+            </div>
+            <div class="detail-row">
               <span class="detail-label">Description:</span>
-              <input [(ngModel)]="action.description" class="custom-input" placeholder="Description de l'action" />
-            </mat-panel-title>
-            <mat-panel-description>
-              <span class="detail-label">Statut:</span>
-              <input [(ngModel)]="action.status" class="custom-input" placeholder="Statut de l'action" />
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          <div class="detail-row">
-            <span class="detail-label">Responsable:</span>
-            <input [(ngModel)]="action.responsable" class="custom-input" />
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Date planifiée:</span>
-            <input [(ngModel)]="action.plannedDate" type="date" class="custom-input" />
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Type d'action:</span>
-            <mat-select [(ngModel)]="action.actionType" placeholder="Sélectionnez un type" class="custom-select">
-              <mat-option *ngFor="let type of technicalActionTypes" [value]="type">
-                {{ type }}
-              </mat-option>
-            </mat-select>
-          </div>
-         
-          <div class="detail-row">
-            <span class="detail-label">Commentaires:</span>
-            <textarea [(ngModel)]="action.comments" class="custom-textarea"></textarea>
-          </div>
-        </mat-expansion-panel>
-      </mat-accordion>
-    </mat-card-content>
-  </mat-card>
+              <textarea [(ngModel)]="demande.description" name="description" class="custom-textarea"></textarea>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <div class="stepper-buttons">
+          <button mat-button matStepperNext color="primary">Suivant</button>
+        </div>
+      </form>
+    </mat-step>
 
-  <!-- Boutons Valider et Rejeter -->
-  <div class="actions-container">
-    <button mat-raised-button color="primary" (click)="approveDemande()">Valider</button>
-    <button mat-raised-button color="warn" (click)="rejectDemande()">Rejeter</button>
-  </div>
+    <!-- Step 2: Étude de la demande -->
+    <mat-step label="Étude de la demande">
+      <form>
+        <mat-card class="section-card">
+          <mat-card-header>
+            <mat-card-title>Étude de la demande</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="detail-row">
+              <span class="detail-label">Service(s) impacté(s):</span>
+              <input [(ngModel)]="demande.impactedInfrastructure" name="impactedInfrastructure" class="custom-input" />
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Niveau d'impact:</span>
+              <mat-select [(ngModel)]="demande.niveauImpact" name="niveauImpact" placeholder="Sélectionnez un niveau d'impact" class="custom-select">
+                <mat-option *ngFor="let impact of impactLevels" [value]="impact">
+                  {{ impact }}
+                </mat-option>
+              </mat-select>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Priorité:</span>
+              <mat-select [(ngModel)]="demande.priorite" name="priorite" placeholder="Sélectionnez une priorité" class="custom-select">
+                <mat-option *ngFor="let priority of priorities" [value]="priority">
+                  {{ priority }}
+                </mat-option>
+              </mat-select>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Catégorie:</span>
+              <mat-select [(ngModel)]="demande.categorie" name="categorie" placeholder="Sélectionnez une catégorie" class="custom-select">
+                <mat-option *ngFor="let categorie of categories" [value]="categorie">
+                  {{ categorie }}
+                </mat-option>
+              </mat-select>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <div class="stepper-buttons">
+          <button mat-button matStepperPrevious>Précédent</button>
+          <button mat-button matStepperNext color="primary">Suivant</button>
+        </div>
+      </form>
+    </mat-step>
 
-  <!-- Bouton Retour -->
-  <div class="actions-container">
-    <button mat-raised-button color="primary" (click)="goBack()">Retour</button>
-  </div>
+    <!-- Step 3: Ressources nécessaires -->
+    <mat-step *ngIf="demande.ressources" label="Ressources nécessaires">
+      <form>
+        <mat-card class="section-card">
+          <mat-card-header>
+            <mat-card-title>Ressources nécessaires</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="detail-row">
+              <span class="detail-label">Ressources humaines:</span>
+              <input [(ngModel)]="demande.ressources.humanResources" name="humanResources" class="custom-input" />
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Ressources matérielles:</span>
+              <input [(ngModel)]="demande.ressources.materialResources" name="materialResources" class="custom-input" />
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <div class="stepper-buttons">
+          <button mat-button matStepperPrevious>Précédent</button>
+          <button mat-button matStepperNext color="primary">Suivant</button>
+        </div>
+      </form>
+    </mat-step>
+<!-- Step 4: Évaluation des risques -->
+    <mat-step *ngIf="demande.riskAssessment" label="Évaluation des risques">
+      <form>
+        <mat-card class="section-card">
+          <mat-card-header>
+            <mat-card-title>Évaluation des risques</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-accordion>
+              <mat-expansion-panel *ngIf="demande.riskAssessment.disponibilite" expanded>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>Disponibilité</mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="detail-row">
+                  <span class="detail-label">Description:</span>
+                  <textarea [(ngModel)]="demande.riskAssessment.disponibilite.description" name="disponibiliteDescription" class="custom-textarea"></textarea>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Impact:</span>
+                  <input [(ngModel)]="demande.riskAssessment.disponibilite.impactValue" name="disponibiliteImpact" class="custom-input" />
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Probabilité:</span>
+                  <input [(ngModel)]="demande.riskAssessment.disponibilite.probability" name="disponibiliteProbability" class="custom-input" />
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Criticité:</span>
+                  <input [(ngModel)]="demande.riskAssessment.disponibilite.criticity" name="disponibiliteCriticity" class="custom-input" />
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Commentaires RSSI:</span>
+                  <textarea [(ngModel)]="demande.riskAssessment.disponibilite.rssiComments" name="disponibiliteRssiComments" class="custom-textarea"></textarea>
+                </div>
+              </mat-expansion-panel>
+
+              <mat-expansion-panel *ngIf="demande.riskAssessment.confidentialite" expanded>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>Confidentialité</mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="detail-row">
+                  <span class="detail-label">Description:</span>
+                  <textarea [(ngModel)]="demande.riskAssessment.confidentialite.description" name="confidentialiteDescription" class="custom-textarea"></textarea>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Impact:</span>
+                  <input [(ngModel)]="demande.riskAssessment.confidentialite.impactValue" name="confidentialiteImpact" class="custom-input" />
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Probabilité:</span>
+                  <input [(ngModel)]="demande.riskAssessment.confidentialite.probability" name="confidentialiteProbability" class="custom-input" />
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Criticité:</span>
+                  <input [(ngModel)]="demande.riskAssessment.confidentialite.criticity" name="confidentialiteCriticity" class="custom-input" />
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Commentaires RSSI:</span>
+                  <textarea [(ngModel)]="demande.riskAssessment.confidentialite.rssiComments" name="confidentialiteRssiComments" class="custom-textarea"></textarea>
+                </div>
+              </mat-expansion-panel>
+
+              <mat-expansion-panel *ngIf="demande.riskAssessment.integrite" expanded>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>Intégrité</mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="detail-row">
+                  <span class="detail-label">Description:</span>
+                  <textarea [(ngModel)]="demande.riskAssessment.integrite.description" name="integriteDescription" class="custom-textarea"></textarea>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Impact:</span>
+                  <input [(ngModel)]="demande.riskAssessment.integrite.impactValue" name="integriteImpact" class="custom-input" />
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Probabilité:</span>
+                  <input [(ngModel)]="demande.riskAssessment.integrite.probability" name="integriteProbability" class="custom-input" />
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Criticité:</span>
+                  <input [(ngModel)]="demande.riskAssessment.integrite.criticity" name="integriteCriticity" class="custom-input" />
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Commentaires RSSI:</span>
+                  <textarea [(ngModel)]="demande.riskAssessment.integrite.rssiComments" name="integriteRssiComments" class="custom-textarea"></textarea>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </mat-card-content>
+        </mat-card>
+        <div class="stepper-buttons">
+          <button mat-button matStepperPrevious>Précédent</button>
+          <button mat-button matStepperNext color="primary">Suivant</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Step 5: Actions techniques -->
+    <mat-step *ngIf="demande.technicalActions && demande.technicalActions.length > 0" label="Actions techniques">
+      <form>
+        <mat-card class="section-card">
+          <mat-card-header>
+            <mat-card-title>Actions techniques</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-accordion>
+              <mat-expansion-panel style="margin-bottom: 15px;" *ngFor="let action of demande.technicalActions" expanded>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <span class="detail-label">Description:</span>
+                    <input [(ngModel)]="action.description" name="actionDescription" class="custom-input" placeholder="Description de l'action" />
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    <span class="detail-label">Statut:</span>
+                    <input [(ngModel)]="action.status" name="actionStatus" class="custom-input" placeholder="Statut de l'action" />
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="detail-row">
+                  <span class="detail-label">Responsable:</span>
+                  <input [(ngModel)]="action.responsable" name="actionResponsable" class="custom-input" />
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Date planifiée:</span>
+                  <input [(ngModel)]="action.plannedDate" name="actionPlannedDate" type="date" class="custom-input" />
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Type d'action:</span>
+                  <mat-select [(ngModel)]="action.actionType" name="actionType" placeholder="Sélectionnez un type" class="custom-select">
+                    <mat-option *ngFor="let type of technicalActionTypes" [value]="type">
+                      {{ type }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Commentaires:</span>
+                  <textarea [(ngModel)]="action.comments" name="actionComments" class="custom-textarea"></textarea>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </mat-card-content>
+        </mat-card>
+        <div class="stepper-buttons">
+          <button mat-button matStepperPrevious>Précédent</button>
+          <button mat-button color="primary" (click)="approveDemande()">Valider</button>
+          <button mat-button color="warn" (click)="rejectDemande()">Rejeter</button>
+          <button mat-button color="primary" (click)="goBack()">Retour</button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

@@ -82,6 +82,7 @@ export class DemandeFormComponent implements OnInit {
         client: [this.initialData?.client || '', Validators.required],
         sourceDeChangement: [this.initialData?.sourceDeChangement || Source.Projet, Validators.required],
         description: [this.initialData?.description || '', Validators.required],
+        causesChangement: [this.initialData?. causesChangement || '', Validators.required],
       }),
       study: this.fb.group({
         impactedInfrastructure: [this.initialData?.impactedInfrastructure || '', Validators.required],

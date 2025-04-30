@@ -49,6 +49,17 @@
         </mat-form-field>
       </div>
 
+
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>causes / objectifs de changement *</mat-label>
+          <textarea matInput formControlName="causesChangement" required></textarea>
+          <mat-error *ngIf="basicInfo.get('causesChangement')?.invalid && basicInfo.get('causesChangement')?.touched">
+            Ce champ est requis
+          </mat-error>
+        </mat-form-field>
+      </div>
+
       <div class="stepper-actions">
         <button mat-raised-button color="primary" matStepperNext [disabled]="basicInfo.invalid">Suivant</button>
       </div>
