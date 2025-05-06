@@ -1,6 +1,6 @@
-import { Component, Inject, ViewEncapsulation ,LOCALE_ID} from '@angular/core';
+import { Component, Inject, ViewEncapsulation, LOCALE_ID } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserModel } from '../user.model';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,7 +14,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
@@ -35,8 +38,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatNativeDateModule,
     MatIconModule,
     MatSlideToggleModule,
-  ],encapsulation: ViewEncapsulation.None
-  
+  ],
+  encapsulation: ViewEncapsulation.None
 })
 export class UserModalComponent {
   userForm: FormGroup;
@@ -45,20 +48,22 @@ export class UserModalComponent {
 
   constructor(
     public dialogRef: MatDialogRef<UserModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { user: UserModel, isEdit: boolean, isNew?: boolean },
+    @Inject(MAT_DIALOG_DATA) public data: { user: UserModel; isEdit: boolean; isNew?: boolean },
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
     private fb: FormBuilder
   ) {
     this.userForm = this.createForm();
   }
 
   createForm(): FormGroup {
-    const formGroup = this.fb.group({
+    return this.fb.group({
       fullName: [this.data.user?.fullName || '', Validators.required],
       email: [this.data.user?.email || '', [Validators.required, Validators.email]],
       phone: [this.data.user?.phone || ''],
       profileImage: [this.data.user?.profileImage || ''],
       password: [
-        this.data.user?.password || '', 
+        this.data.user?.password || '',
         this.data.isNew ? [Validators.required, Validators.minLength(6)] : []
       ],
       confirmPassword: ['', this.data.isNew ? Validators.required : []],
@@ -69,15 +74,35 @@ export class UserModalComponent {
     }, {
       validators: this.passwordsMatchValidator
     });
-  
-    return formGroup;
   }
-  
+
   onSave(): void {
-    if (this.userForm.valid) {
-      const { confirmPassword, ...formValue } = this.userForm.getRawValue();
-      this.dialogRef.close(formValue); // On exclut confirmPassword
-    }
+    if (this.userForm.invalid) return;
+
+    const updatedUser: UserModel = {
+      ...this.data.user,
+      ...this.userForm.value,
+      confirmPassword: undefined, // Ne pas inclure confirmPassword dans les données sauvegardées
+    };
+
+    // Afficher la fenêtre de confirmation
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '400px',
+      data: {
+        message: `Voulez-vous vraiment ${this.data.isNew ? 'créer' : 'enregistrer les modifications pour'} l'utilisateur ${updatedUser.fullName} ?`,
+        confirmText: 'Oui',
+        cancelText: 'Non'
+      },
+      disableClose: true,
+      autoFocus: true,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        // L'utilisateur a confirmé, fermer la fenêtre avec les données mises à jour
+        this.dialogRef.close(updatedUser);
+      }
+    });
   }
 
   onCancel(): void {
@@ -86,12 +111,6 @@ export class UserModalComponent {
 
   togglePasswordVisibility(): void {
     this.hidePassword = !this.hidePassword;
-  }
-
-  formatRoleForDisplay(role: string): string {
-    return role.split('_').map(word => 
-      word.charAt(0) + word.slice(1).toLowerCase()
-    ).join(' ');
   }
 
   passwordsMatchValidator(form: FormGroup) {

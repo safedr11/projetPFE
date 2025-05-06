@@ -19,6 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-demandes',
@@ -39,7 +40,7 @@ import { MatOptionModule } from '@angular/material/core';
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatOptionModule
+    MatOptionModule,
   ],
   templateUrl: './demandes.component.html',
   styleUrls: ['./demandes.component.scss']
@@ -54,6 +55,7 @@ export class DemandesComponent implements OnInit {
   isDBU = false;
   isDSI = false;
   isAllDemands = false; // Flag to determine if showing "Tous les Demandes"
+  isMyDemands = false; // Flag to determine if showing "Mes Demandes"
 
   // Filtres
   selectedStatus: string = '';
@@ -83,9 +85,10 @@ export class DemandesComponent implements OnInit {
     this.isDBU = this.authService.isDBU();
     this.isDSI = this.authService.isDSI();
 
-    // Determine if the current route is for "Tous les Demandes"
+    // Déterminer la route actuelle pour charger les données appropriées
     this.route.url.subscribe(url => {
       this.isAllDemands = url.some(segment => segment.path === 'toutes');
+      this.isMyDemands = url.some(segment => segment.path === 'mes-demandes');
       this.loadDemandes();
     });
   }
@@ -97,7 +100,19 @@ export class DemandesComponent implements OnInit {
 
   loadDemandes(): void {
     this.isLoading = true;
-    this.demandesService.getDemandes().subscribe({
+
+    let demandeObservable: Observable<DemandeModel[]>;
+
+    if (this.isAllDemands) {
+      demandeObservable = this.demandesService.getAllDemandes();
+    } else if (this.isMyDemands) {
+      demandeObservable = this.demandesService.getMesDemande();
+    } else {
+      // Par défaut, on peut charger les demandes personnelles ou toutes selon le contexte
+      demandeObservable = this.demandesService.getMesDemande();
+    }
+
+    demandeObservable.subscribe({
       next: (demandes) => {
         this.dataSource.data = demandes;
         this.isLoading = false;

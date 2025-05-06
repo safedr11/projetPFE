@@ -141,7 +141,7 @@ export class UtilisateursComponent implements OnInit {
       width: '600px',
       data: { user, isEdit: true }
     });
-
+  
     dialogRef.afterClosed().subscribe(updatedData => {
       if (updatedData) {
         this.userService.updateUser(user.id, updatedData).subscribe({
@@ -150,6 +150,9 @@ export class UtilisateursComponent implements OnInit {
             if (index !== -1) {
               this.users[index] = updatedUser;
               this.dataSource.data = [...this.users];
+              this.snackBar.open('Utilisateur mis à jour avec succès', 'Fermer', {
+                duration: 3000
+              });
             }
           },
           error: (err) => console.error('Erreur lors de la mise à jour', err)
@@ -157,7 +160,6 @@ export class UtilisateursComponent implements OnInit {
       }
     });
   }
-
   addUser(): void {
     const dialogRef = this.dialog.open(UserModalComponent, {
       width: '600px',

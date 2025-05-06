@@ -26,7 +26,7 @@ export class DemandesService {
     return this.http.post<DemandeModel>(this.apiUrl, demande);
   }
 
-  getDemandes(): Observable<DemandeModel[]> {
+  /*getDemandes(): Observable<DemandeModel[]> {
     if (
       this.authService.isAdmin() ||
       this.authService.isChange_Manger() ||
@@ -38,6 +38,13 @@ export class DemandesService {
     } else {
       return this.http.get<DemandeModel[]>(`${this.apiUrl}/mes-demandes`);
     }
+  }*/
+  getMesDemande(): Observable<DemandeModel[]> {
+    return this.http.get<DemandeModel[]>(`${this.apiUrl}/mes-demandes`);
+  }
+
+  getAllDemandes(): Observable<DemandeModel[]> {
+    return this.http.get<DemandeModel[]>(`${this.apiUrl}/All`);
   }
 
   submitDemande(demande: DemandeModel): Observable<DemandeModel> {

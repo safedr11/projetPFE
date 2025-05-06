@@ -25,29 +25,30 @@
       <input matInput formControlName="phone">
     </mat-form-field>
 
-    <!-- Mot de passe (visible in both creation and edit modes) -->
+    <!-- Mot de passe -->
     <mat-form-field appearance="outline" class="full-width" *ngIf="data.isNew || data.isEdit">
       <mat-label>{{ data.isEdit ? 'Nouveau mot de passe' : 'Mot de passe' }}</mat-label>
       <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
-      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+      <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
         <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
       <mat-error *ngIf="userForm.get('password')?.hasError('minlength')">
         Le mot de passe doit contenir au moins 6 caractères
       </mat-error>
     </mat-form-field>
-    <!-- Confirmer le mot de passe (en création ou modification) -->
-<mat-form-field appearance="outline" class="full-width" *ngIf="data.isNew || data.isEdit">
-  <mat-label>Confirmer le mot de passe</mat-label>
-  <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="confirmPassword">
-  <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
-    <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-  </button>
-</mat-form-field>
 
-<div *ngIf="userForm.errors?.['passwordMismatch'] && userForm.get('confirmPassword')?.touched" class="error">
-  Les mots de passe ne correspondent pas.
-</div>
+    <!-- Confirmer le mot de passe -->
+    <mat-form-field appearance="outline" class="full-width" *ngIf="data.isNew || data.isEdit">
+      <mat-label>Confirmer le mot de passe</mat-label>
+      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="confirmPassword">
+      <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <div *ngIf="userForm.errors?.['passwordMismatch'] && userForm.get('confirmPassword')?.touched" class="error">
+      Les mots de passe ne correspondent pas.
+    </div>
 
     <!-- Rôles -->
     <mat-form-field appearance="outline" class="full-width" *ngIf="data.isEdit || data.isNew">
