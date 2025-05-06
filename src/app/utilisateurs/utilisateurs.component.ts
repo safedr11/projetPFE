@@ -14,10 +14,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog'; // Add MatDialogModule
 import { UserModalComponent } from '../user-modal/user-modal.component';
-import { MatSnackBarModule } from '@angular/material/snack-bar'; // Importer MatSnackBarModule
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   standalone: true,
@@ -25,21 +25,23 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './utilisateurs.component.html',
   styleUrls: ['./utilisateurs.component.scss'],
   imports: [
-    MatSelectModule, 
-    MatFormFieldModule, 
-    MatInputModule, 
-    MatButtonModule, 
-    MatIconModule, 
-    MatTableModule, 
-    MatPaginatorModule, 
-    MatSortModule, 
-    MatCardModule, 
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatCardModule,
     MatTooltipModule,
-    FormsModule, 
-    ReactiveFormsModule, 
-    MatChipsModule, 
+    FormsModule,
+    ReactiveFormsModule,
+    MatChipsModule,
     CommonModule,
-    MatSnackBarModule, // Ajouter MatSnackBarModule ici
+    MatSnackBarModule,
+    MatDialogModule, // Add this to the imports
+    ConfirmationDialogComponent,
   ],
 })
 export class UtilisateursComponent implements OnInit {
@@ -53,7 +55,11 @@ export class UtilisateursComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private userService: UsersService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
+  constructor(
+    private userService: UsersService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.loadUsers();
@@ -86,11 +92,39 @@ export class UtilisateursComponent implements OnInit {
   }
 
   toggleStatus(user: UserModel): void {
-    this.userService.toggleUserStatus(user.id).subscribe(updatedUser => {
-      const index = this.users.findIndex(u => u.id === updatedUser.id);
-      if (index !== -1) {
-        this.users[index] = updatedUser;
-        this.dataSource.data = [...this.users];
+    const action = user.active ? 'désactiver' : 'activer';
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.width = '400px';
+    dialogConfig.data = {
+      message: `Voulez-vous vraiment ${action} l'utilisateur ${user.fullName} ?`,
+      confirmText: 'Oui',
+      cancelText: 'Non'
+    };
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.userService.toggleUserStatus(user.id).subscribe({
+          next: (updatedUser) => {
+            const index = this.users.findIndex(u => u.id === updatedUser.id);
+            if (index !== -1) {
+              this.users[index] = updatedUser;
+              this.dataSource.data = [...this.users];
+              this.snackBar.open(
+                `Utilisateur ${updatedUser.active ? 'activé' : 'désactivé'} avec succès`,
+                'Fermer',
+                { duration: 3000 }
+              );
+            }
+          },
+          error: (err) => {
+            console.error('Erreur lors de la mise à jour du statut', err);
+            this.snackBar.open('Erreur lors de la mise à jour du statut', 'Fermer', { duration: 3000 });
+          }
+        });
       }
     });
   }
@@ -107,7 +141,7 @@ export class UtilisateursComponent implements OnInit {
       width: '600px',
       data: { user, isEdit: true }
     });
-  
+
     dialogRef.afterClosed().subscribe(updatedData => {
       if (updatedData) {
         this.userService.updateUser(user.id, updatedData).subscribe({
@@ -127,7 +161,7 @@ export class UtilisateursComponent implements OnInit {
   addUser(): void {
     const dialogRef = this.dialog.open(UserModalComponent, {
       width: '600px',
-      data: { 
+      data: {
         user: {
           id: null,
           fullName: '',
@@ -139,9 +173,9 @@ export class UtilisateursComponent implements OnInit {
           active: true,
           createdAt: new Date(),
           updatedAt: new Date()
-        }, 
+        },
         isEdit: false,
-        isNew: true 
+        isNew: true
       }
     });
 
@@ -149,19 +183,15 @@ export class UtilisateursComponent implements OnInit {
       if (newUserData) {
         this.userService.createUser(newUserData).subscribe({
           next: (createdUser) => {
-            // Message de succès
             console.log('Utilisateur créé avec succès', createdUser);
             this.users.push(createdUser);
             this.dataSource.data = [...this.users];
-            // Afficher un message de succès à l'utilisateur
             this.snackBar.open('Utilisateur créé avec succès', 'Fermer', {
               duration: 3000
             });
           },
           error: (err) => {
-            // Message d'erreur
             console.error('Erreur lors de la création', err);
-            // Afficher un message d'erreur à l'utilisateur
             this.snackBar.open(err.error || 'Erreur lors de la création de l\'utilisateur', 'Fermer', {
               duration: 3000
             });
@@ -169,5 +199,5 @@ export class UtilisateursComponent implements OnInit {
         });
       }
     });
-}
+  }
 }

@@ -113,9 +113,9 @@
           </button>
 
           <!-- Icône pour activer/désactiver l'utilisateur -->
-          <button mat-icon-button [color]="user.active ? 'warn' : 'primary'" [matTooltip]="user.active ? 'Désactiver' : 'Activer'" (click)="toggleStatus(user)">
-            <mat-icon>{{ user.active ? 'block' : 'check_circle' }}</mat-icon>
-          </button>
+    <button mat-icon-button [color]="user.active ? 'warn' : 'primary'" [matTooltip]="user.active ? 'Désactiver' : 'Activer'" (click)="toggleStatus(user)">
+      <mat-icon>{{ user.active ? 'block' : 'check_circle' }}</mat-icon>
+    </button>
         </td>
       </ng-container>
 
@@ -127,4 +127,8 @@
     <!-- Pagination -->
     <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
   </div>
+  <!-- Hidden reference to suppress unused component warning -->
+  <ng-template [ngIf]="false">
+    <app-confirmation-dialog></app-confirmation-dialog>
+  </ng-template>
 </div>
