@@ -13,6 +13,7 @@ import { DemandeFormComponent } from './pages/demandes/demande-form/demande-form
 import { ConsultationDemandeComponent } from './pages/demandes/consultation-demande/consultation-demande.component';
 import { DemandeDecisionComponent } from './pages/demandes/demande-decision/demande-decision.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ChatComponent } from './chat/chat.component';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent },
@@ -26,17 +27,18 @@ export const routes: Routes = [
       {
         path: 'demandes',
         children: [
-          { path: '', component: DemandesComponent }, // /home/demandes
-          { path: 'nouvelle', component: DemandeFormComponent }, // /home/demandes/nouvelle
+          { path: 'mes-demandes', component: DemandesComponent },
+          { path: 'toutes', component: DemandesComponent },
+          { path: '', component: DemandesComponent }, // Default route
+          { path: 'nouvelle', component: DemandeFormComponent },
           { path: ':id/modifier', component: DemandeFormComponent },
           { path: 'details/:id', component: ConsultationDemandeComponent },
-          { path: 'decision/:id', component:DemandeDecisionComponent },
-         
-          
+          { path: 'decision/:id', component: DemandeDecisionComponent }
         ]
 
       },
       { path: 'overview', component:DashboardComponent },
+      {path:'AssistanceIa',component:ChatComponent} ,
     ]
   },
   { path: 'forgot-password', component: ForgotPasswordComponent },

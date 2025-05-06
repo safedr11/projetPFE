@@ -1,71 +1,119 @@
 .mat-sidenav-container {
-    height: 95vh;
+  height: 95vh;
 }
 
 .mat-sidenav-content {
-    padding: 20px;
+  padding: 20px;
 }
 
 .mat-toolbar {
-    background-color: #3f51b5; /* Couleur de fond de la barre d'outils */
-    color: white; /* Couleur du texte */
+  background-color: #3f51b5;
+  color: white;
 }
 
 .mat-sidenav {
-    background-color: #f5f5f5; /* Couleur de fond de la barre latérale */
+  background-color: #f5f5f5;
 }
 
-.mat-list-item {
-    &:hover {
-        background-color: #e0e0e0; /* Couleur de fond au survol */
-    }
+mat-expansion-panel {
+  background: transparent;
+  box-shadow: none !important;
 }
 
-.mat-icon {
-    margin-right: 8px; /* Espacement entre l'icône et le texte */
+mat-expansion-panel-header {
+  padding: 0 16px;
+  height: 48px !important;
+  cursor: pointer; /* Curseur pour indiquer la navigabilité */
+}
+
+mat-expansion-panel-header:hover {
+  background-color: #e0e0e0; /* Effet de survol uniforme */
+}
+
+mat-panel-title {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.menu-icon {
+  margin-right: 8px;
+  color: #666;
+  font-size: 20px; /* Taille uniforme pour les icônes */
+}
+
+.menu-label {
+  flex-grow: 1;
+  font-size: 14px;
+  color: #444;
+}
+
+.chevron-icon {
+  margin-left: auto;
+  color: #666;
+  transition: transform 0.2s; /* Animation pour le chevron */
+}
+
+mat-expansion-panel[expanded] .chevron-icon {
+  transform: rotate(180deg);
+}
+
+/* Masquer le chevron par défaut de mat-expansion-panel */
+mat-expansion-panel-header .mat-expansion-indicator {
+  display: none;
+}
+
+mat-nav-list a {
+  padding-left: 32px; /* Indentation pour les sous-éléments */
+  font-size: 14px;
+  color: #444;
+}
+
+mat-nav-list a:hover {
+  background-color: #e0e0e0;
 }
 
 .spacer {
-    flex: 1 1 auto;
+  flex: 1 1 auto;
 }
+
 .login-logo {
-    display: block !important;
-    margin: 0 auto !important; /* Centre horizontalement */
-    max-width: 100% !important; /* S'assure que le logo ne dépasse pas les limites */
-  }
-  .new-notification {
-    color: black !important;
-  }
-  
-  mat-menu {
-    min-width: 300px;
-  }
-  
-  mat-list-item {
-    white-space: normal !important;
-    overflow: visible !important;
-    text-overflow: initial !important;
-    height: auto !important;
-    padding: 8px 16px;
-  }
-  
-  mat-list-item strong {
-    display: inline !important;
-  }
-  
-  .spacer {
-    flex: 1 1 auto;
-  }
-  ::ng-deep .mat-mdc-list-item-unscoped-content {
-    white-space: normal !important;
-    overflow: visible !important;
-    text-overflow: unset !important;
-    display: block !important;
-  }
-  
-  ::ng-deep .mat-mdc-list-item-content,
-  ::ng-deep .mdc-list-item__primary-text {
-    height: auto !important;
-    line-height: 1.5 !important;
-    display: block !important;
-  }
+  display: block !important;
+  margin: 0 auto !important;
+  max-width: 100% !important;
+}
+
+.new-notification {
+  color: black !important;
+}
+
+mat-menu {
+  min-width: 300px;
+}
+
+mat-list-item {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: initial !important;
+  height: auto !important;
+  padding: 8px 16px;
+}
+
+mat-list-item strong {
+  display: inline !important;
+}
+
+::ng-deep .mat-mdc-list-item-unscoped-content {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  display: block !important;
+}
+
+::ng-deep .mat-mdc-list-item-content,
+::ng-deep .mdc-list-item__primary-text {
+  height: auto !important;
+  line-height: 1.5 !important;
+  display: block !important;
+}

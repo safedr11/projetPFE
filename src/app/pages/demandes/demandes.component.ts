@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
@@ -13,7 +13,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { DemandesService } from '../../services/demandes.service';
 import { AuthService } from '../../services/auth.service';
-import { DemandeModel, Statuts, Priorite,Impact,Categorie } from '../../models/demande-model';
+import { DemandeModel, Statuts, Priorite, Impact, Categorie } from '../../models/demande-model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -45,16 +45,16 @@ import { MatOptionModule } from '@angular/material/core';
   styleUrls: ['./demandes.component.scss']
 })
 export class DemandesComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'client', 'description', 'status', 'priorite','niveauImpact','categorie', 'createdAt', 'actions'];
+  displayedColumns: string[] = ['id', 'client', 'description', 'status', 'priorite', 'niveauImpact', 'categorie', 'createdAt', 'actions'];
   dataSource = new MatTableDataSource<DemandeModel>();
   isLoading = true;
   isAdmin = false;
   isRSSI = false;
-  isChangeManager = false;  
+  isChangeManager = false;
   isDBU = false;
   isDSI = false;
+  isAllDemands = false; // Flag to determine if showing "Tous les Demandes"
 
-  
   // Filtres
   selectedStatus: string = '';
   selectedPriority: string = '';
@@ -62,8 +62,8 @@ export class DemandesComponent implements OnInit {
   selectedCategorie: string = '';
   statuses: Statuts[] = Object.values(Statuts);
   priorities: Priorite[] = Object.values(Priorite);
-  impacts :Impact[]= Object.values(Impact);
-  categories :Categorie[]= Object.values(Categorie);
+  impacts: Impact[] = Object.values(Impact);
+  categories: Categorie[] = Object.values(Categorie);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -72,7 +72,8 @@ export class DemandesComponent implements OnInit {
     private demandesService: DemandesService,
     private authService: AuthService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -81,7 +82,12 @@ export class DemandesComponent implements OnInit {
     this.isChangeManager = this.authService.isChange_Manger();
     this.isDBU = this.authService.isDBU();
     this.isDSI = this.authService.isDSI();
-    this.loadDemandes();
+
+    // Determine if the current route is for "Tous les Demandes"
+    this.route.url.subscribe(url => {
+      this.isAllDemands = url.some(segment => segment.path === 'toutes');
+      this.loadDemandes();
+    });
   }
 
   ngAfterViewInit() {
@@ -90,6 +96,7 @@ export class DemandesComponent implements OnInit {
   }
 
   loadDemandes(): void {
+    this.isLoading = true;
     this.demandesService.getDemandes().subscribe({
       next: (demandes) => {
         this.dataSource.data = demandes;

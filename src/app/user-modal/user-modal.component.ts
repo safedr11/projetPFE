@@ -52,7 +52,7 @@ export class UserModalComponent {
   }
 
   createForm(): FormGroup {
-    return this.fb.group({
+    const formGroup = this.fb.group({
       fullName: [this.data.user?.fullName || '', Validators.required],
       email: [this.data.user?.email || '', [Validators.required, Validators.email]],
       phone: [this.data.user?.phone || ''],
@@ -61,17 +61,22 @@ export class UserModalComponent {
         this.data.user?.password || '', 
         this.data.isNew ? [Validators.required, Validators.minLength(6)] : []
       ],
+      confirmPassword: ['', this.data.isNew ? Validators.required : []],
       roles: [this.data.user?.roles || [], Validators.required],
       active: [this.data.user?.active ?? true],
       createdAt: [this.data.user?.createdAt || new Date()],
       updatedAt: [this.data.user?.updatedAt || new Date()]
+    }, {
+      validators: this.passwordsMatchValidator
     });
+  
+    return formGroup;
   }
-
+  
   onSave(): void {
     if (this.userForm.valid) {
-      const formValue = this.userForm.getRawValue();
-      this.dialogRef.close(formValue);
+      const { confirmPassword, ...formValue } = this.userForm.getRawValue();
+      this.dialogRef.close(formValue); // On exclut confirmPassword
     }
   }
 
@@ -87,5 +92,11 @@ export class UserModalComponent {
     return role.split('_').map(word => 
       word.charAt(0) + word.slice(1).toLowerCase()
     ).join(' ');
+  }
+
+  passwordsMatchValidator(form: FormGroup) {
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { passwordMismatch: true };
   }
 }

@@ -5,11 +5,9 @@
     </button>
     <h1>Gestion des changements</h1>
     <span class="spacer"></span>
-    <!-- Bouton pour afficher les notifications -->
     <button mat-icon-button [matMenuTriggerFor]="notificationMenu" (click)="clearNewNotificationState()" [@shake]="shakeState">
       <mat-icon [ngClass]="{'new-notification': hasNewNotifications}">notifications</mat-icon>
     </button>
-  
     <mat-menu #notificationMenu="matMenu">
       <mat-list>
         <mat-list-item *ngFor="let notification of notifications">
@@ -33,15 +31,28 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav opened mode="side" [style.width.px]="200">
     <img src="assets/wevioo_logo.png" alt="Wevioo Logo" class="login-logo" style="margin-top: 16px !important;" />
-    <mat-nav-list style="margin-top: 16px;">  
-      @for(item of filteredMenuItems; track $index){
-        <a mat-list-item [routerLink]="item.route">
-          <mat-icon matListItemIcon>{{item.icon}}</mat-icon>
-          <span>{{item.label}}</span>
-        </a>
+    <mat-nav-list style="margin-top: 16px;">
+      @for(item of filteredMenuItems; track $index) {
+        <mat-expansion-panel [disabled]="!item.subItems" [expanded]="false">
+          <mat-expansion-panel-header [routerLink]="!item.subItems ? item.route : null" (click)="!item.subItems && $event.stopPropagation()">
+            <mat-panel-title>
+              <mat-icon class="menu-icon">{{item.icon}}</mat-icon>
+              <span class="menu-label">{{item.label}}</span>
+              <mat-icon class="chevron-icon" *ngIf="item.subItems">expand_more</mat-icon>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          @if(item.subItems) {
+            <mat-nav-list>
+              @for(subItem of item.subItems; track $index) {
+                <a mat-list-item [routerLink]="subItem.route">
+                  <span>{{subItem.label}}</span>
+                </a>
+              }
+            </mat-nav-list>
+          }
+        </mat-expansion-panel>
       }
     </mat-nav-list>
-    
   </mat-sidenav>
   <mat-sidenav-content>
     <router-outlet/>

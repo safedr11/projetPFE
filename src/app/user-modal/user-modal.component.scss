@@ -120,6 +120,13 @@ input[readonly] {
   }
 }
 
+
+.error {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 4px;
+}
+
 /* Styles responsives */
 @media (max-width: 600px) {
   mat-dialog-content {

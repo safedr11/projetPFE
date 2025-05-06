@@ -16,6 +16,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { UserModalComponent } from '../user-modal/user-modal.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar'; // Importer MatSnackBarModule
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   standalone: true,
@@ -36,12 +38,13 @@ import { UserModalComponent } from '../user-modal/user-modal.component';
     FormsModule, 
     ReactiveFormsModule, 
     MatChipsModule, 
-    CommonModule
+    CommonModule,
+    MatSnackBarModule, // Ajouter MatSnackBarModule ici
   ],
 })
 export class UtilisateursComponent implements OnInit {
   users: UserModel[] = [];
-  roles: string[] = ['ROLE_ADMIN', 'ROLE_DEMANDEUR', 'ROLE_ChangeManager', 'ROLE_RSSI', 'ROLE_DBU', 'ROLE_DSI', 'ROLE_EXECUTEuR'];
+  roles: string[] = ['ROLE_ADMIN', 'ROLE_DEMANDEUR', 'ROLE_ChangeManager', 'ROLE_RSSI', 'ROLE_DBU', 'ROLE_DSI', 'ROLE_EXECUTEUR'];
   selectedRole: string = '';
   selectedStatus: boolean | null = null;
   displayedColumns: string[] = ['id', 'fullName', 'email', 'roles', 'createdAt', 'updatedAt', 'status', 'actions'];
@@ -50,7 +53,7 @@ export class UtilisateursComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private userService: UsersService, private dialog: MatDialog) { }
+  constructor(private userService: UsersService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.loadUsers();
@@ -146,12 +149,25 @@ export class UtilisateursComponent implements OnInit {
       if (newUserData) {
         this.userService.createUser(newUserData).subscribe({
           next: (createdUser) => {
+            // Message de succès
+            console.log('Utilisateur créé avec succès', createdUser);
             this.users.push(createdUser);
             this.dataSource.data = [...this.users];
+            // Afficher un message de succès à l'utilisateur
+            this.snackBar.open('Utilisateur créé avec succès', 'Fermer', {
+              duration: 3000
+            });
           },
-          error: (err) => console.error('Erreur lors de la création', err)
+          error: (err) => {
+            // Message d'erreur
+            console.error('Erreur lors de la création', err);
+            // Afficher un message d'erreur à l'utilisateur
+            this.snackBar.open(err.error || 'Erreur lors de la création de l\'utilisateur', 'Fermer', {
+              duration: 3000
+            });
+          }
         });
       }
     });
-  }
+}
 }

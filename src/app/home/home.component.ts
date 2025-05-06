@@ -11,6 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { StompService } from '../services/stomp.service';
 import { trigger, state, style, animate, transition, keyframes } from '@angular/animations';
 
@@ -28,7 +29,8 @@ import { trigger, state, style, animate, transition, keyframes } from '@angular/
     RouterModule,
     MatToolbarModule,
     MatListModule,
-    MatMenuModule
+    MatMenuModule,
+    MatExpansionModule
   ],
   animations: [
     trigger('shake', [
@@ -54,7 +56,6 @@ export class HomeComponent implements OnInit {
   hasNewNotifications: boolean = false;
   shakeState: string = 'inactive';
   
-  // Ajouter une propriété pour l'audio
   private notificationSound: HTMLAudioElement;
 
   menuItems: any[] = [
@@ -73,8 +74,22 @@ export class HomeComponent implements OnInit {
     {
       icon: 'description',
       label: 'Demandes',
-      route: 'demandes',
-      roles: ['DEMANDEUR', 'ADMIN', 'CHANGE_MANAGER', 'RSSI', 'DBU', 'DSI', 'EXECUTER']
+      roles: ['DEMANDEUR', 'ADMIN', 'CHANGE_MANAGER', 'RSSI', 'DBU', 'DSI', 'EXECUTER'],
+      subItems: [
+        {
+          label: 'Mes Demandes',
+          route: 'demandes/mes-demandes',
+          roles: ['DEMANDEUR', 'ADMIN', 'CHANGE_MANAGER', 'RSSI', 'DBU', 'DSI', 'EXECUTER']
+        },
+        {
+          label: 'Tous les Demandes',
+          route: 'demandes/toutes',
+          roles: ['ADMIN', 'CHANGE_MANAGER', 'RSSI', 'DBU', 'DSI']
+        },
+    
+      
+      
+      ]
     },
     {
       icon: 'dashboard',
@@ -82,6 +97,12 @@ export class HomeComponent implements OnInit {
       route: 'overview',
       roles: ['DEMANDEUR', 'ADMIN', 'CHANGE_MANAGER', 'RSSI', 'DBU', 'DSI', 'EXECUTER']
     },
+    {
+      icon: 'support_agent',
+      label: 'Assistant IA',
+      route: 'AssistanceIa',
+      roles: ['DEMANDEUR', 'ADMIN', 'CHANGE_MANAGER', 'RSSI', 'DBU', 'DSI', 'EXECUTER']
+    }
   ];
 
   constructor(
@@ -92,7 +113,6 @@ export class HomeComponent implements OnInit {
   ) {
     this.userEmail = localStorage.getItem('userEmail');
     this.userRole = localStorage.getItem('userRole');
-    // Initialiser l'audio avec le chemin du fichier
     this.notificationSound = new Audio('/assets/simple-notification-152054.mp3');
   }
 
@@ -106,15 +126,12 @@ export class HomeComponent implements OnInit {
         this.notifications = [...newNotifications, ...this.notifications];
         this.hasNewNotifications = true;
         this.shakeState = 'active';
-        
-        // Jouer le son lorsqu'une nouvelle notification est reçue
         this.playNotificationSound();
       },
       error: (err) => console.error('Erreur lors de la réception des notifications:', err),
     });
   }
 
-  // Méthode pour jouer le son
   private playNotificationSound(): void {
     this.notificationSound.play().catch(error => {
       console.error('Erreur lors de la lecture du son de notification:', error);
@@ -127,7 +144,15 @@ export class HomeComponent implements OnInit {
   }
 
   get filteredMenuItems() {
-    return this.menuItems.filter(item => item.roles.includes(this.userRole));
+    return this.menuItems.map(item => {
+      if (item.subItems) {
+        return {
+          ...item,
+          subItems: item.subItems.filter((subItem: any) => subItem.roles.includes(this.userRole))
+        };
+      }
+      return item;
+    }).filter(item => item.roles.includes(this.userRole));
   }
 
   logout(): void {
