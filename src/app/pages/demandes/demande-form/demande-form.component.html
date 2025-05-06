@@ -7,7 +7,7 @@
 
       <div class="form-group">
         <mat-form-field appearance="fill">
-          <mat-label>Demandeur *</mat-label>
+          <mat-label>Demandeur </mat-label>
           <input matInput formControlName="demandeur" required>
           <mat-error *ngIf="basicInfo.get('demandeur')?.invalid && basicInfo.get('demandeur')?.touched">
             Ce champ est requis
@@ -17,7 +17,7 @@
 
       <div class="form-group">
         <mat-form-field appearance="fill">
-          <mat-label>Client *</mat-label>
+          <mat-label>Client </mat-label>
           <input matInput formControlName="client" required>
           <mat-error *ngIf="basicInfo.get('client')?.invalid && basicInfo.get('client')?.touched">
             Ce champ est requis
@@ -27,7 +27,7 @@
 
       <div class="form-group">
         <mat-form-field appearance="fill">
-          <mat-label>Source de changement *</mat-label>
+          <mat-label>Source de changement </mat-label>
           <mat-select formControlName="sourceDeChangement" required>
             <mat-option *ngFor="let source of enums.sources" [value]="source">
               {{ source }}
@@ -41,7 +41,7 @@
 
       <div class="form-group">
         <mat-form-field appearance="fill">
-          <mat-label>Description *</mat-label>
+          <mat-label>Description </mat-label>
           <textarea matInput formControlName="description" required></textarea>
           <mat-error *ngIf="basicInfo.get('description')?.invalid && basicInfo.get('description')?.touched">
             Ce champ est requis
@@ -52,7 +52,7 @@
 
       <div class="form-group">
         <mat-form-field appearance="fill">
-          <mat-label>causes / objectifs de changement *</mat-label>
+          <mat-label>causes / objectifs de changement </mat-label>
           <textarea matInput formControlName="causesChangement" required></textarea>
           <mat-error *ngIf="basicInfo.get('causesChangement')?.invalid && basicInfo.get('causesChangement')?.touched">
             Ce champ est requis
@@ -74,7 +74,7 @@
 
       <div class="form-group">
         <mat-form-field appearance="fill">
-          <mat-label>Service(s) impacté(s) *</mat-label>
+          <mat-label>Service(s) impacté(s) </mat-label>
           <input matInput formControlName="impactedInfrastructure" required>
           <mat-error *ngIf="study.get('impactedInfrastructure')?.invalid && study.get('impactedInfrastructure')?.touched">
             Ce champ est requis
@@ -84,7 +84,7 @@
 
       <div class="form-group">
         <mat-form-field appearance="fill">
-          <mat-label>Niveau d'impact *</mat-label>
+          <mat-label>Niveau d'impact </mat-label>
           <mat-select formControlName="niveauImpact" required>
             <mat-option *ngFor="let impact of enums.impacts" [value]="impact">
               {{ impact }}
@@ -95,7 +95,7 @@
 
       <div class="form-group">
         <mat-form-field appearance="fill">
-          <mat-label>Priorité *</mat-label>
+          <mat-label>Priorité </mat-label>
           <mat-select formControlName="priorite" required>
             <mat-option *ngFor="let priority of enums.priorities" [value]="priority">
               {{ priority }}
@@ -106,7 +106,7 @@
 
       <div class="form-group">
         <mat-form-field appearance="fill">
-          <mat-label>Catégorie *</mat-label>
+          <mat-label>Catégorie </mat-label>
           <mat-select formControlName="categorie" required>
             <mat-option *ngFor="let category of enums.categories" [value]="category">
               {{ category }}
@@ -176,12 +176,12 @@
             <input matInput type="number" formControlName="probability" min="1" max="4">
           </mat-form-field>
         </div>
-        <div class="form-group">
+       <!--<div class="form-group">
           <mat-form-field appearance="fill">
             <mat-label>Commentaire du RSSI</mat-label>
             <textarea matInput formControlName="rssiComments"></textarea>
           </mat-form-field>
-        </div>
+        </div>--> 
       </div>
 
       <!-- Intégrité -->
@@ -205,12 +205,12 @@
             <input matInput type="number" formControlName="probability" min="1" max="4">
           </mat-form-field>
         </div>
-        <div class="form-group">
+       <!--<div class="form-group">
           <mat-form-field appearance="fill">
             <mat-label>Commentaire du RSSI</mat-label>
             <textarea matInput formControlName="rssiComments"></textarea>
           </mat-form-field>
-        </div>
+        </div>--> 
       </div>
 
       <!-- Confidentialité -->
@@ -234,12 +234,12 @@
             <input matInput type="number" formControlName="probability" min="1" max="5">
           </mat-form-field>
         </div>
-        <div class="form-group">
+        <!--<div class="form-group">
           <mat-form-field appearance="fill">
             <mat-label>Commentaire du RSSI</mat-label>
             <textarea matInput formControlName="rssiComments"></textarea>
           </mat-form-field>
-        </div>
+        </div>-->
       </div>
 
       <div class="stepper-actions">
@@ -260,7 +260,7 @@
         <div *ngFor="let action of technicalActions.controls; let i = index" [formGroupName]="i" class="technical-action">
           <div class="form-group">
             <mat-form-field appearance="fill">
-              <mat-label>Description *</mat-label>
+              <mat-label>Description </mat-label>
               <input matInput formControlName="description" required>
               <mat-error *ngIf="action.get('description')?.invalid && action.get('description')?.touched">
                 Ce champ est requis
@@ -288,7 +288,7 @@
                 </mat-error>
               </mat-form-field>
             </div>          
-          <div class="form-group">
+        <!-- <div class="form-group">
             <mat-form-field appearance="fill">
               <mat-label>Statut</mat-label>
               <mat-select formControlName="status">
@@ -297,7 +297,21 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
+          </div>-->  
+          <div class="form-group">
+            <mat-form-field appearance="fill">
+              <mat-label>Type d'action</mat-label>
+              <mat-select formControlName="status">
+                <mat-option *ngFor="let status of enums.actionTypes" [value]="status">
+                  {{ status }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
+        
+        
+      
+
           <div class="form-group">
             <button mat-icon-button color="warn" (click)="removeTechnicalAction(i)">
               <mat-icon>delete</mat-icon>
