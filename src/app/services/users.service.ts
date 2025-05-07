@@ -34,4 +34,9 @@ export class UsersService {
   createUser(data: UserModel): Observable<UserModel> {
     return this.http.post<UserModel>(`${this.apiUrl}/createUser`, data);
   }
+  getExecuteurs(): Observable<UserModel[]> {
+    return this.http.get<UserModel[]>(`${this.apiUrl}/Executeur`);
+  }
+
+  
 }

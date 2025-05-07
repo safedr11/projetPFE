@@ -270,7 +270,11 @@
           <div class="form-group">
             <mat-form-field appearance="fill">
               <mat-label>Responsable *</mat-label>
-              <input matInput formControlName="responsable" required>
+              <mat-select formControlName="responsable" required>
+                <mat-option *ngFor="let exec of executeurs" [value]="exec.id">
+                  {{ exec.fullName }} <!-- ou exec.username selon ton DTO -->
+                </mat-option>
+              </mat-select>
               <mat-error *ngIf="action.get('responsable')?.invalid && action.get('responsable')?.touched">
                 Ce champ est requis
               </mat-error>
@@ -301,14 +305,13 @@
           <div class="form-group">
             <mat-form-field appearance="fill">
               <mat-label>Type d'action</mat-label>
-              <mat-select formControlName="status">
-                <mat-option *ngFor="let status of enums.actionTypes" [value]="status">
-                  {{ status }}
+              <mat-select formControlName="actionType">
+                <mat-option *ngFor="let actionType of enums.actionTypes" [value]="actionType">
+                  {{ actionType }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
-        
         
       
 

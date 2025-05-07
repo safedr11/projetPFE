@@ -20,6 +20,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { Observable } from 'rxjs';
+import { ApprovalDetailsComponent } from '../../approval-details/approval-details.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ValidationHistory } from '../../approval-details/ValidationHistory'; // Assurez-vous que le chemin est correct pour votre projet
 
 @Component({
   selector: 'app-demandes',
@@ -41,6 +44,9 @@ import { Observable } from 'rxjs';
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
+  
+  
+
   ],
   templateUrl: './demandes.component.html',
   styleUrls: ['./demandes.component.scss']
@@ -75,7 +81,8 @@ export class DemandesComponent implements OnInit {
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialog: MatDialog // AJOUTÉ ICI
   ) {}
 
   ngOnInit(): void {
@@ -180,5 +187,46 @@ export class DemandesComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  viewValidationDetails(id: string): void {
+    this.demandesService.getValidationHistory(id).subscribe({
+      next: (history) => {
+        this.dialog.open(ApprovalDetailsComponent, {
+          data: { validationHistory: history },
+          width: '700px'
+        });
+      },
+      error: (err) => {
+        console.error('Erreur récupération des validations', err);
+        this.snackBar.open('Erreur lors de la récupération des détails d’approbation', 'Fermer', {
+          duration: 5000,
+          panelClass: ['error-snackbar']
+        });
+      }
+    });
+  }
+
+
+  canTakeDecision(demande: DemandeModel): boolean {
+    if (!this.isAllDemands) return false;
+  
+    if (this.isRSSI && demande.categorie === 'Significatif') {
+      return true;
+    }
+  
+    if (this.isDSI && demande.categorie === 'Majeur_Applicatif') {
+      return true;
+    }
+  
+    if (this.isDBU && demande.categorie === 'Majeur_Non_Applicatif') {
+      return true;
+    }
+  
+    if (this.isChangeManager) {
+      return true; // l'admin peut tout faire
+    }
+  
+    return false;
   }
 }

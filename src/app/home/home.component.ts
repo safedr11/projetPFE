@@ -77,12 +77,12 @@ export class HomeComponent implements OnInit {
       roles: ['DEMANDEUR', 'ADMIN', 'CHANGE_MANAGER', 'RSSI', 'DBU', 'DSI', 'EXECUTER'],
       subItems: [
         {
-          label: 'Mes Demandes',
+          label: 'Mes demandes',
           route: 'demandes/mes-demandes',
           roles: ['DEMANDEUR', 'ADMIN', 'CHANGE_MANAGER', 'RSSI', 'DBU', 'DSI', 'EXECUTER']
         },
         {
-          label: 'Tous les Demandes',
+          label: 'Toutes les demandes',
           route: 'demandes/toutes',
           roles: ['ADMIN', 'CHANGE_MANAGER', 'RSSI', 'DBU', 'DSI']
         },

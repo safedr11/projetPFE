@@ -47,6 +47,7 @@ export class DemandesService {
     return this.http.get<DemandeModel[]>(`${this.apiUrl}/All`);
   }
 
+
   submitDemande(demande: DemandeModel): Observable<DemandeModel> {
     return this.http.post<DemandeModel>(`${this.apiUrl}/submit`, demande);
   }
@@ -56,8 +57,22 @@ export class DemandesService {
   }
 
   validerDemande(id: string, demande: DemandeModel, approuve: boolean): Observable<{ message: string }> {
-    return this.http.put<{ message: string }>(`${this.apiUrl}/valider/${id}?approuve=${approuve}`, demande);
-  }
+    if (this.authService.isChange_Manger()) {
+        return this.http.put<{ message: string }>(`${this.apiUrl}/validerChangeManager/${id}?approuve=${approuve}`, demande);
+    }
+    if (this.authService.isRSSI()) {
+        return this.http.put<{ message: string }>(`${this.apiUrl}/validerRSSI/${id}?approuve=${approuve}`, demande);
+    }
+    if (this.authService.isDBU()) {
+        return this.http.put<{ message: string }>(`${this.apiUrl}/validerDBU/${id}?approuve=${approuve}`, demande);
+    }
+    if (this.authService.isDSI()) {
+        return this.http.put<{ message: string }>(`${this.apiUrl}/validerDSI/${id}?approuve=${approuve}`, demande);
+    }
+    
+    // Cas par défaut si aucun rôle ne correspond
+    return throwError(() => new Error('Aucun rôle valide pour effectuer cette validation'));
+}
 
   fetchStats(forceRefresh: boolean = false): Observable<DemandeAttributeStatsDTO> {
     if (!forceRefresh && this.statsCache && this.cacheTimestamp) {
@@ -97,4 +112,11 @@ export class DemandesService {
     this.statsCache = null;
     this.cacheTimestamp = null;
   }
+
+
+
+  getValidationHistory(id: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/validations/${id}`);
+  }
+  
 }

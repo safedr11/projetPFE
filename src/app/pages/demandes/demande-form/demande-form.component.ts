@@ -14,7 +14,10 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { FrenchDatePipe } from '../french-date.pipe';
+import { UserModel } from './userModel';
+import{ UsersService } from '../../../services/users.service';
+//import { FrenchDatePipe } from '../french-date.pipe';
+
 import { 
   DemandeModel, 
   Categorie, 
@@ -27,6 +30,7 @@ import {
   TechnicalAction,
   RiskAssessment,
   RequiredResources
+
 } from '../../../models/demande-model';
 
 @Component({
@@ -63,16 +67,22 @@ export class DemandeFormComponent implements OnInit {
     actionStatuses: Object.values(TechnicalStatus)
   };
 
+  executeurs: UserModel[] = [];
+
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     private router: Router,
     private snackBar: MatSnackBar,
-    private demandeService: DemandesService
+    private demandeService: DemandesService,
+    private userService: UsersService 
   ) {}
 
   ngOnInit(): void {
     this.initForm();
+    this.userService.getExecuteurs().subscribe((data: UserModel[]) => {
+      this.executeurs = data;
+    });
   }
 
   private initForm(): void {

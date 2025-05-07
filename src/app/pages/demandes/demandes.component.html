@@ -130,9 +130,16 @@
           <button mat-icon-button color="accent" [matTooltip]="'Consulter la demande'" (click)="viewDemande(demande.id)">
             <mat-icon>visibility</mat-icon>
           </button>
-          <button *ngIf="(isRSSI || isChangeManager || isDSI || isDBU) && isAllDemands" mat-icon-button color="primary" [matTooltip]="'Prendre une décision'" (click)="navigateToDecision(demande.id)">
+          <button *ngIf="canTakeDecision(demande)" mat-icon-button color="primary" [matTooltip]="'Prendre une décision'" (click)="navigateToDecision(demande.id)">
             <mat-icon>gavel</mat-icon>
           </button>
+          <button *ngIf="isAdmin && isAllDemands"
+        mat-icon-button
+        color="primary"
+        [matTooltip]="'Les détails de l\'approbation'"
+        (click)="viewValidationDetails(demande.id)">
+        <mat-icon>description</mat-icon>
+     </button>
         </td>
       </ng-container>
 
