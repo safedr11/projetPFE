@@ -118,5 +118,10 @@ export class DemandesService {
   getValidationHistory(id: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/validations/${id}`);
   }
+
+
+  updateDemande(id: string, demande: DemandeModel): Observable<DemandeModel> {
+    return this.http.put<DemandeModel>(`${this.apiUrl}/update/${id}`, demande);
+  }
   
 }

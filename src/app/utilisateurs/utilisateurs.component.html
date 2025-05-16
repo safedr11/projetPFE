@@ -59,7 +59,7 @@
       </ng-container>
 <!-- Colonne Rôles -->
 <ng-container matColumnDef="roles">
-  <th mat-header-cell *matHeaderCellDef>Rôles</th>
+  <th mat-header-cell *matHeaderCellDef>Rôle</th>
   <td mat-cell *matCellDef="let user">
     <mat-chip-listbox>
       @for (role of user.roles; track role) {
@@ -100,24 +100,24 @@
 
       <!-- Colonne Actions -->
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let user">
-          <!-- Icône pour consulter le profil -->
-          <button mat-icon-button color="accent" [matTooltip]="'Consulter le profil'" (click)="viewProfile(user)">
-            <mat-icon>visibility</mat-icon>
-          </button>
-
-          <!-- Icône pour modifier l'utilisateur -->
-          <button mat-icon-button color="primary" [matTooltip]="'Modifier'" (click)="editUser(user)">
-            <mat-icon>edit</mat-icon>
-          </button>
-
-          <!-- Icône pour activer/désactiver l'utilisateur -->
-    <button mat-icon-button [color]="user.active ? 'warn' : 'primary'" [matTooltip]="user.active ? 'Désactiver' : 'Activer'" (click)="toggleStatus(user)">
-      <mat-icon>{{ user.active ? 'block' : 'check_circle' }}</mat-icon>
-    </button>
-        </td>
-      </ng-container>
+  <th mat-header-cell *matHeaderCellDef>Actions</th>
+  <td mat-cell *matCellDef="let user">
+    <ng-container *ngIf="!user.roles.includes('ROLE_ADMIN')">
+      <!-- Icône pour consulter le profil -->
+      <button mat-icon-button color="accent" [matTooltip]="'Consulter le profil'" (click)="viewProfile(user)">
+        <mat-icon>visibility</mat-icon>
+      </button>
+      <!-- Icône pour modifier l'utilisateur -->
+      <button mat-icon-button color="primary" [matTooltip]="'Modifier'" (click)="editUser(user)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <!-- Icône pour activer/désactiver l'utilisateur -->
+      <button mat-icon-button [color]="user.active ? 'warn' : 'primary'" [matTooltip]="user.active ? 'Désactiver' : 'Activer'" (click)="toggleStatus(user)">
+        <mat-icon>{{ user.active ? 'block' : 'check_circle' }}</mat-icon>
+      </button>
+    </ng-container>
+  </td>
+</ng-container>
 
       <!-- Header et Rows -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

@@ -33,7 +33,11 @@ export const routes: Routes = [
           { path: 'nouvelle', component: DemandeFormComponent },
           { path: ':id/modifier', component: DemandeFormComponent },
           { path: 'details/:id', component: ConsultationDemandeComponent },
-          { path: 'decision/:id', component: DemandeDecisionComponent }
+          { path: 'decision/:id', component: DemandeDecisionComponent },
+          {
+            path: 'mettre-a-jour/:id',
+            component: DemandeDecisionComponent
+          }
         ]
 
       },

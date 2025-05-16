@@ -14,6 +14,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { StompService } from '../services/stomp.service';
 import { trigger, state, style, animate, transition, keyframes } from '@angular/animations';
+import { MatDialog } from '@angular/material/dialog';
+import { NotificationsComponent } from '../notifications/notifications.component';
 
 @Component({
   selector: 'app-home',
@@ -109,7 +111,8 @@ export class HomeComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private stompService: StompService
+    private stompService: StompService,
+    private dialog: MatDialog
   ) {
     this.userEmail = localStorage.getItem('userEmail');
     this.userRole = localStorage.getItem('userRole');
@@ -176,4 +179,18 @@ export class HomeComponent implements OnInit {
       },
     });
   }
+
+
+
+
+
+openNotifications(): void {
+  this.clearNewNotificationState(); // réinitialise l'état du shake
+  this.dialog.open(NotificationsComponent, {
+    width: '400px',
+    data: { notifications: this.notifications }
+  });
+}
+
+
 }

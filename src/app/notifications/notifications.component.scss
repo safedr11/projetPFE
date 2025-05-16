@@ -1,0 +1,48 @@
+/* Éviter la troncation du texte */
+.mat-mdc-list-item__content,
+.mat-mdc-list-item-unscoped-content,
+.mat-mdc-list-item__primary-text {
+  white-space: normal; /* Permet le retour à la ligne automatique */
+  overflow: visible;   /* Empêche toute troncation due à overflow */
+  text-overflow: unset; /* Désactive le comportement par défaut de "text-overflow" */
+  display: block;       /* Assure que l'élément peut s'étendre verticalement */
+}
+
+/* Optionnel : Ajouter un maximum de lignes pour éviter des notifications trop longues */
+.mat-mdc-list-item__content,
+.mat-mdc-list-item-unscoped-content,
+.mat-mdc-list-item__primary-text {
+  display: -webkit-box; /* Pour WebKit browsers */
+ 
+  -webkit-box-orient: vertical;
+  overflow: hidden; /* Tronque après le nombre de lignes spécifié */
+}
+mat-menu {
+  min-width: 300px;
+}
+
+mat-list-item {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: initial !important;
+  height: auto !important;
+  padding: 8px 16px;
+}
+
+mat-list-item strong {
+  display: inline !important;
+}
+
+::ng-deep .mat-mdc-list-item-unscoped-content {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  display: block !important;
+}
+
+::ng-deep .mat-mdc-list-item-content,
+::ng-deep .mdc-list-item__primary-text {
+  height: auto !important;
+  line-height: 1.5 !important;
+  display: block !important;
+}

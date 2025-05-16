@@ -164,6 +164,10 @@ export class DemandesComponent implements OnInit {
     this.router.navigate(['/home/demandes/nouvelle']);
   }
 
+  navigateToMettreJour(id: string): void {
+    this.router.navigate(['/home/demandes/mettre-a-jour', id]);
+  }
+
   viewDemande(id: string): void {
     this.router.navigate(['/home/demandes/details', id]);
   }
@@ -211,19 +215,19 @@ export class DemandesComponent implements OnInit {
   canTakeDecision(demande: DemandeModel): boolean {
     if (!this.isAllDemands) return false;
   
-    if (this.isRSSI && demande.categorie === 'Significatif') {
+    if (this.isRSSI && demande.categorie === 'Significatif' && demande.status === Statuts.en_cours_validation) {
       return true;
     }
   
-    if (this.isDSI && demande.categorie === 'Majeur_Applicatif') {
+    if (this.isDSI && demande.categorie === 'Majeur_Applicatif'&& demande.status === Statuts.en_cours_validation) {
       return true;
     }
   
-    if (this.isDBU && demande.categorie === 'Majeur_Non_Applicatif') {
+    if (this.isDBU && demande.categorie === 'Majeur_Non_Applicatif'&& demande.status === Statuts.en_cours_validation) {
       return true;
     }
   
-    if (this.isChangeManager) {
+    if (this.isChangeManager&& demande.status === Statuts.en_cours_revision) {
       return true; // l'admin peut tout faire
     }
   

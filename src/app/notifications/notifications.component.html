@@ -1,7 +1,13 @@
-<mat-menu #notificationMenu="matMenu">
+<h2 mat-dialog-title>Notifications</h2>
+
+<mat-dialog-content>
   <mat-list>
-    <mat-list-item *ngFor="let notification of notifications">
-      {{ notification }}
+    <mat-list-item *ngFor="let notification of data.notifications">
+      <strong>{{ notification.title }}</strong>: {{ notification.message }}
     </mat-list-item>
   </mat-list>
-</mat-menu>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Fermer</button>
+</mat-dialog-actions>

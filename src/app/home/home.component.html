@@ -5,19 +5,11 @@
     </button>
     <h1>Gestion des changements</h1>
     <span class="spacer"></span>
-    <button mat-icon-button [matMenuTriggerFor]="notificationMenu" (click)="clearNewNotificationState()" [@shake]="shakeState">
-      <mat-icon [ngClass]="{'new-notification': hasNewNotifications}">notifications</mat-icon>
-    </button>
-    <mat-menu #notificationMenu="matMenu">
-      <mat-list>
-        <mat-list-item *ngFor="let notification of notifications">
-          <strong>{{ notification.title }}</strong>: {{ notification.message }}
-        </mat-list-item>
-      </mat-list>
-    </mat-menu>
-    <button mat-icon-button>
-      <mat-icon>mail</mat-icon>
-    </button>
+    <button mat-icon-button (click)="openNotifications()" [@shake]="shakeState">
+  <mat-icon [ngClass]="{'new-notification': hasNewNotifications}">notifications</mat-icon>
+</button>
+    
+    
     <button mat-icon-button [matMenuTriggerFor]="profileMenu">
       <mat-icon>account_circle</mat-icon>
     </button>
@@ -38,7 +30,7 @@
             <mat-panel-title>
               <mat-icon class="menu-icon">{{item.icon}}</mat-icon>
               <span class="menu-label">{{item.label}}</span>
-              <mat-icon class="chevron-icon" *ngIf="item.subItems">expand_more</mat-icon>
+    
             </mat-panel-title>
           </mat-expansion-panel-header>
           @if(item.subItems) {

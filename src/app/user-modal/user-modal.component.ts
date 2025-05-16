@@ -60,7 +60,7 @@ export class UserModalComponent {
     return this.fb.group({
       fullName: [this.data.user?.fullName || '', Validators.required],
       email: [this.data.user?.email || '', [Validators.required, Validators.email]],
-      phone: [this.data.user?.phone || ''],
+     
       profileImage: [this.data.user?.profileImage || ''],
       password: [
         this.data.user?.password || '',

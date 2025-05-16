@@ -13,18 +13,112 @@
     <!-- Email -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Email</mat-label>
-      <input matInput formControlName="email" [readonly]="!data.isEdit && !data.isNew">
+      <input matInput formControlName="email" [readonly]="!data.isNew">
       <mat-error *ngIf="userForm.get('email')?.hasError('email')">
         Veuillez entrer un email valide
       </mat-error>
     </mat-form-field>
+<h2 mat-dialog-title>
+  {{ data.isNew ? 'Ajouter un nouvel utilisateur' : (data.isEdit ? 'Modifier l\'utilisateur' : 'Profil utilisateur') }}
+</h2>
 
-    <!-- Téléphone -->
-    <mat-form-field appearance="outline" class="full-width" *ngIf="data.isEdit || data.isNew">
-      <mat-label>Téléphone</mat-label>
-      <input matInput formControlName="phone">
+<mat-dialog-content>
+  <form [formGroup]="userForm">
+    <!-- Nom complet -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nom complet</mat-label>
+      <input matInput formControlName="fullName" [readonly]="!data.isEdit && !data.isNew">
+      <mat-error *ngIf="userForm.get('fullName')?.hasError('required')">
+        Veuillez entrer un nom complet
+      </mat-error>
     </mat-form-field>
 
+    <!-- Email -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" [readonly]="!data.isNew">
+      <mat-error *ngIf="userForm.get('email')?.hasError('email')">
+        Veuillez entrer un email valide
+      </mat-error>
+      <mat-error *ngIf="userForm.get('email')?.hasError('required')">
+        Veuillez entrer un email
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Mot de passe -->
+    <mat-form-field appearance="outline" class="full-width" *ngIf="data.isNew || data.isEdit">
+      <mat-label>{{ data.isEdit ? 'Nouveau mot de passe' : 'Mot de passe' }}</mat-label>
+      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+      <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="userForm.get('password')?.hasError('minlength')">
+        Le mot de passe doit contenir au moins 6 caractères
+      </mat-error>
+      <mat-error *ngIf="userForm.get('password')?.hasError('required')">
+        Veuillez entrer un mot de passe
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Confirmer le mot de passe -->
+    <mat-form-field appearance="outline" class="full-width" *ngIf="data.isNew || data.isEdit">
+      <mat-label>Confirmer le mot de passe</mat-label>
+      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="confirmPassword">
+      <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="userForm.get('confirmPassword')?.hasError('required')">
+        Veuillez confirmer le mot de passe
+      </mat-error>
+    </mat-form-field>
+
+    <div *ngIf="userForm.errors?.['passwordMismatch'] && userForm.get('confirmPassword')?.touched" class="error">
+      Les mots de passe ne correspondent pas.
+    </div>
+
+    <!-- Rôles -->
+    <mat-form-field appearance="outline" class="full-width" *ngIf="data.isEdit || data.isNew">
+      <mat-label>Rôles</mat-label>
+      <mat-select formControlName="roles" multiple>
+        <mat-option *ngFor="let role of rolesList" [value]="role">
+          {{ role.replace('ROLE_', '') }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="userForm.get('roles')?.hasError('required')">
+        Veuillez sélectionner au moins un rôle
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Statut -->
+    <mat-slide-toggle formControlName="active" *ngIf="data.isEdit || data.isNew">
+      {{ userForm.get('active')?.value ? 'Actif' : 'Inactif' }}
+    </mat-slide-toggle>
+
+    <!-- Dates (en lecture seule) -->
+    <mat-form-field appearance="outline" class="full-width" *ngIf="!data.isNew">
+      <mat-label>Date de création</mat-label>
+      <input matInput [value]="userForm.get('createdAt')?.value | date: 'dd/MM/yyyy HH:mm'" readonly>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width" *ngIf="!data.isNew">
+      <mat-label>Dernière mise à jour</mat-label>
+      <input matInput [value]="userForm.get('updatedAt')?.value | date: 'dd/MM/yyyy HH:mm'" readonly>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="onSave()"
+    [disabled]="!userForm.valid"
+    *ngIf="data.isEdit || data.isNew">
+    {{ data.isNew ? 'Créer' : 'Enregistrer' }}
+  </button>
+</mat-dialog-actions>
+    
     <!-- Mot de passe -->
     <mat-form-field appearance="outline" class="full-width" *ngIf="data.isNew || data.isEdit">
       <mat-label>{{ data.isEdit ? 'Nouveau mot de passe' : 'Mot de passe' }}</mat-label>

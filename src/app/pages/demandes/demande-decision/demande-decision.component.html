@@ -3,7 +3,20 @@
 </div>
 
 <div *ngIf="!loading && demande" class="demande-details-container">
-  <h2>Prise de Décision</h2>
+  <!-- Card pour la prise de décision et les boutons -->
+  <mat-card class="decision-card" style="margin-bottom: 24px;">
+    <mat-card-header>
+      <mat-card-title>Prise de Décision</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="decision-buttons-global" style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <button *ngIf="!isUpdateUrl" mat-raised-button color="primary" (click)="approveDemande()">Valider</button>
+        <button *ngIf="!isUpdateUrl" mat-raised-button color="warn" (click)="rejectDemande()">Rejeter</button>
+        <button *ngIf="isRSSI && isUpdateUrl" mat-raised-button color="accent" (click)="mettrejourDemande()">Mettre à jour</button>
+        <button mat-raised-button (click)="goBack()">Retour</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
 
   <mat-horizontal-stepper linear #stepper>
     <!-- Step 1: Informations de base -->
@@ -107,7 +120,8 @@
         </div>
       </form>
     </mat-step>
-<!-- Step 4: Évaluation des risques -->
+
+    <!-- Step 4: Évaluation des risques -->
     <mat-step *ngIf="demande.riskAssessment" label="Évaluation des risques">
       <form>
         <mat-card class="section-card">
@@ -249,9 +263,7 @@
         </mat-card>
         <div class="stepper-buttons">
           <button mat-button matStepperPrevious>Précédent</button>
-          <button mat-button color="primary" (click)="approveDemande()">Valider</button>
-          <button mat-button color="warn" (click)="rejectDemande()">Rejeter</button>
-          <button mat-button color="primary" (click)="goBack()">Retour</button>
+          <button mat-button matStepperNext color="primary">Suivant</button>
         </div>
       </form>
     </mat-step>

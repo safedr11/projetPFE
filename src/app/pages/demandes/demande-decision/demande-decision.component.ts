@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router'; // ✅ Corrigé ici
 import { DemandesService } from '../../../services/demandes.service';
-import { DemandeModel, TechnicalActionType, TechnicalStatus,Impact, Priorite, Categorie  } from '../../../models/demande-model';
+import { DemandeModel, TechnicalActionType, TechnicalStatus, Impact, Priorite, Categorie } from '../../../models/demande-model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatStepperModule } from '@angular/material/stepper';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-demande-decision',
@@ -33,38 +34,42 @@ import { MatStepperModule } from '@angular/material/stepper';
   styleUrls: ['./demande-decision.component.scss']
 })
 export class DemandeDecisionComponent implements OnInit {
-  demande: DemandeModel | null = null; // Contient les données de la demande
-  loading = true; // Indique si les données sont en cours de chargement
-  isEditable = false; // Active le mode édition si nécessaire
+  demande: DemandeModel | null = null;
+  loading = true;
+  isEditable = false;
+  isRSSI = false;
+  isUpdateUrl = false;
 
-  // Liste des types d'action et des statuts
   technicalActionTypes = Object.values(TechnicalActionType);
   technicalStatuses = Object.values(TechnicalStatus);
-  // Listes pour les énumérations
   impactLevels = Object.values(Impact);
   priorities = Object.values(Priorite);
   categories = Object.values(Categorie);
   demandeId: string | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private demandesService: DemandesService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthService,
+    private router: Router // ✅ Corrigé ici
   ) {}
 
   ngOnInit(): void {
-    // Récupère l'ID de la demande depuis l'URL
+    const currentUrl = this.route.snapshot.url.map(segment => segment.path).join('/');
+this.isUpdateUrl = currentUrl.includes('mettre-a-jour');
+    this.isRSSI = this.authService.isRSSI();
     const id = this.route.snapshot.paramMap.get('id');
-    this.demandeId = this.route.snapshot.paramMap.get('id');
+    this.demandeId = id;
     console.log('ID de la demande:', id);
     const isDecisionRoute = this.route.snapshot.url.some(segment => segment.path === 'decision');
-    this.isEditable = isDecisionRoute; // Active le mode édition si la route contient "decision"
+    this.isEditable = isDecisionRoute;
 
     if (id) {
-      // Charge les données de la demande via le service
       this.demandesService.getDemandeById(id).subscribe({
         next: (demande) => {
-          this.demande = demande; // Associe les données récupérées à la propriété `demande`
-          this.loading = false; // Désactive le spinner de chargement
+          this.demande = demande;
+          this.loading = false;
         },
         error: () => {
           this.loading = false;
@@ -76,12 +81,12 @@ export class DemandeDecisionComponent implements OnInit {
     }
   }
 
-  // Méthode pour retourner à la page précédente
   goBack(): void {
     window.history.back();
+    // Option recommandée :
+    // this.router.navigate(['/chemin/retour']); // <- définis le chemin cible ici
   }
 
-  
   approveDemande(): void {
     if (this.demande && this.demandeId) {
       this.demandesService.validerDemande(this.demandeId, this.demande, true).subscribe({
@@ -96,6 +101,7 @@ export class DemandeDecisionComponent implements OnInit {
       });
     }
   }
+
   rejectDemande(): void {
     if (this.demande && this.demandeId) {
       this.demandesService.validerDemande(this.demandeId, this.demande, false).subscribe({
@@ -108,4 +114,19 @@ export class DemandeDecisionComponent implements OnInit {
         }
       });
     }
-  }}
+  }
+
+  mettrejourDemande(): void {
+    if (this.demande && this.demandeId) {
+      this.demandesService.updateDemande(this.demandeId, this.demande).subscribe({
+        next: (response) => {
+          this.snackBar.open('Mise à jour réussie.', 'Fermer', { duration: 3000 });
+          this.goBack();
+        },
+        error: () => {
+          this.snackBar.open('Erreur lors de la mise à jour.', 'Fermer', { duration: 3000 });
+        }
+      });
+    }
+  }
+}

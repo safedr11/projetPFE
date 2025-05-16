@@ -73,7 +73,7 @@ export interface User {
     rejetée = 'rejetée',
     en_cours_revision = 'en_cours_revision',
     en_cours_execution = 'en_cours_execution',
-    en_cours_vérification = 'en_cours_vérification'
+    en_cours_validation = 'en_cours_validation'
   }
   
   export enum TechnicalActionType {

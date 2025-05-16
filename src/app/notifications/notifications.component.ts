@@ -1,25 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { StompService } from '../services/stomp.service';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatListModule } from '@angular/material/list';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-notifications',
-  templateUrl: './notifications.component.html',
-  styleUrls: ['./notifications.component.scss'],
   standalone: true,
-  imports: [MatMenuModule, MatListModule, CommonModule],
+  templateUrl: './notifications.component.html',
+  styleUrl: './notifications.component.scss', // optionnel si tu veux du style
+  imports: [CommonModule, MatDialogModule, MatListModule]
 })
-export class NotificationsComponent implements OnInit {
-  notifications: string[] = [];
-
-  constructor(private stompService: StompService) {}
-
-  ngOnInit(): void {
-    // Récupère les notifications à chaque fois qu'elles arrivent
-    this.stompService.getNotifications().subscribe((notifications: string[]) => {
-      this.notifications = notifications;
-    });
-  }
+export class NotificationsComponent {
+  constructor(
+    public dialogRef: MatDialogRef<NotificationsComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { notifications: any[] }
+  ) {}
 }
