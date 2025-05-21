@@ -10,7 +10,7 @@
     </mat-card-header>
     <mat-card-content>
       <div class="decision-buttons-global" style="display: flex; gap: 12px; flex-wrap: wrap;">
-        <button *ngIf="!isUpdateUrl" mat-raised-button color="primary" (click)="approveDemande()">Valider</button>
+        <button *ngIf="!isUpdateUrl" mat-raised-button color="primary" (click)="approveDemande()">Approuver</button>
         <button *ngIf="!isUpdateUrl" mat-raised-button color="warn" (click)="rejectDemande()">Rejeter</button>
         <button *ngIf="isRSSI && isUpdateUrl" mat-raised-button color="accent" (click)="mettrejourDemande()">Mettre à jour</button>
         <button mat-raised-button (click)="goBack()">Retour</button>

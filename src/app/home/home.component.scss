@@ -78,10 +78,13 @@ mat-nav-list a:hover {
   flex: 1 1 auto;
 }
 
-.login-logo {
-  display: block !important;
-  margin: 0 auto !important;
-  max-width: 100% !important;
+.mat-sidenav-container {
+  .login-logo {
+    display: block !important;
+    margin: 0 auto !important;
+    margin-top: 16px !important;
+    max-width: 100% !important;
+  }
 }
 
 .new-notification {

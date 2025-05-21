@@ -1,3 +1,10 @@
+
+<div class="submit-button-container">
+  <button mat-raised-button color="primary" (click)="onSubmit()">Soumettre la demande </button>
+</div>
+
+
+
 <mat-horizontal-stepper [linear]="true" #stepper>
   <!-- Étape 1 : Informations de base -->
   <mat-step [stepControl]="basicInfo">
@@ -330,10 +337,9 @@
         </button>
       </div>
 
-      <div class="stepper-actions">
-        <button mat-button matStepperPrevious>Précédent</button>
-        <button mat-raised-button color="primary" (click)="onSubmit()">Soumettre</button>
-      </div>
+      
+      
+      
     </form>
   </mat-step>
 </mat-horizontal-stepper>

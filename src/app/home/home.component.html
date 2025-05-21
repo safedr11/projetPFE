@@ -20,9 +20,9 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<mat-sidenav-container>
+<mat-sidenav-container class="mat-sidenav-container">
   <mat-sidenav #sidenav opened mode="side" [style.width.px]="200">
-    <img src="assets/wevioo_logo.png" alt="Wevioo Logo" class="login-logo" style="margin-top: 16px !important;" />
+    <img src="assets/wevioo_logo.png" alt="Wevioo Logo" class="login-logo" />
     <mat-nav-list style="margin-top: 16px;">
       @for(item of filteredMenuItems; track $index) {
         <mat-expansion-panel [disabled]="!item.subItems" [expanded]="false">
